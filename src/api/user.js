@@ -1,24 +1,23 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
+import Resource from './resource';
 
-export function login(data) {
-  return request({
-    url: '/vue-element-admin/user/login',
-    method: 'post',
-    data
-  })
+export default class User extends Resource {
+  constructor() {
+    super('users');
+  }
+  getAuthUser() {
+    return request({
+      url: '/' + this.uri + '/auth',
+      method: 'get',
+    });
+  }
+  login(resource) {
+    return request({
+      url: '/' + this.uri + '/login',
+      method: 'post',
+      data: resource,
+    });
+  }
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/vue-element-admin/user/info',
-    method: 'get',
-    params: { token }
-  })
-}
-
-export function logout() {
-  return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
-  })
-}
+export const UserResource = new User();
