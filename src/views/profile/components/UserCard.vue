@@ -6,7 +6,7 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
+        <pan-thumb :image="user.avatar?user.avatar:'/images/defaultUser.png'" :height="'100px'" :width="'100px'" :hoverable="false">
           <div>Hello</div>
           {{ user.role }}
         </pan-thumb>
@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import PanThumb from '@/components/PanThumb'
+import PanThumb from '@/components/PanThumb';
 
 export default {
   components: { PanThumb },
@@ -65,12 +65,12 @@ export default {
           name: '',
           email: '',
           avatar: '',
-          role: ''
-        }
-      }
-    }
-  }
-}
+          role: '',
+        };
+      },
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

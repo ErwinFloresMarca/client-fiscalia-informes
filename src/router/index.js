@@ -2,7 +2,6 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 Vue.use(Router);
-
 /* Layout */
 import Layout from '@/layout';
 
@@ -11,7 +10,8 @@ import Layout from '@/layout';
 // import chartsRouter from './modules/charts';
 // import tableRouter from './modules/table';
 // import nestedRouter from './modules/nested';
-
+import webRouter from './modules/web';
+import { adminRoutes } from './modules/admin';
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -50,11 +50,11 @@ export const constantRoutes = [
       },
     ],
   },
-  {
-    path: '/login',
-    component: () => import('@/views/login/index'),
-    hidden: true,
-  },
+  // {
+  //   path: '/login',
+  //   component: () => import('@/views/login/index'),
+  //   hidden: true,
+  // },
   {
     path: '/auth-redirect',
     component: () => import('@/views/login/auth-redirect'),
@@ -70,33 +70,7 @@ export const constantRoutes = [
     component: () => import('@/views/error-page/401'),
     hidden: true,
   },
-  {
-    path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [
-      {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true },
-      },
-    ],
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true },
-      },
-    ],
-  },
+  webRouter,
 ];
 
 /**
@@ -109,21 +83,8 @@ export const asyncRoutes = [
   // chartsRouter,
   // nestedRouter,
   // tableRouter,
-
-  {
-    path: '/error-log',
-    component: Layout,
-    children: [
-      {
-        path: 'log',
-        component: () => import('@/views/error-log/index'),
-        name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' },
-      },
-    ],
-  },
-
   // 404 page must be placed at the end !!!
+  ... adminRoutes,
   { path: '*', redirect: '/404', hidden: true },
 ];
 
