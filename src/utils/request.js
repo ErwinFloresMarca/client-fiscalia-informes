@@ -15,7 +15,6 @@ const service = axios.create({
 service.interceptors.response.use(
   response => {
     const res = response;
-    console.log('response');
     // if the custom code is not 20000, it is judged as an error.
     return res;
   },

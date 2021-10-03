@@ -29,7 +29,7 @@ router.beforeEach(async(to, from, next) => {
   document.title = getPageTitle(to.meta.title);
 
   // first check in constant routes
-  if (whiteList.indexOf(to.path) !== -1 && !(to.path === '/login' && getToken())) {
+  if (whiteList.indexOf(to.path) !== -1 && !((to.path === '/login' || to.path === '/registrarse') && getToken())) {
     // in the free login whitelist, go directly
     next();
     NProgress.done();
@@ -40,7 +40,7 @@ router.beforeEach(async(to, from, next) => {
     if (hasToken) {
       const hasPermissions = store.getters.permissions && store.getters.permissions.length > 0;
       if (hasPermissions) {
-        if (to.path === '/login') {
+        if (to.path === '/login' || to.path === '/registrarse') {
           // if is logged in, redirect to the home page
           next({ path: '/admin/dashboard' });
           NProgress.done(); // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
@@ -61,7 +61,7 @@ router.beforeEach(async(to, from, next) => {
 
           // hack method to ensure that addRoutes is complete
           // set the replace: true, so the navigation will not leave a history record
-          if (to.path === '/login') {
+          if (to.path === '/login' || to.path === '/registrarse') {
             // if is logged in, redirect to the home page
             next({ path: '/admin/dashboard' });
             NProgress.done(); // hack: https://github.com/PanJiaChen/vue-element-admin/pull/2939
