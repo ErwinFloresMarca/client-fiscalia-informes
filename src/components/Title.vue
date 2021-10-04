@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="20" type="flex" justify="center">
-    <h1 class="title">{{ getTitle }}</h1>
+    <h2 class="title">{{ getTitle }}</h2>
   </el-row>
 </template>
 
@@ -23,6 +23,7 @@ export default {
 
 <style lang="scss" scoped>
 .title{
+  padding-top: 6px;
   color: #285082;
 }
 </style>

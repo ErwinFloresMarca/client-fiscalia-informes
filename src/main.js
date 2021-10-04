@@ -40,7 +40,9 @@ Object.keys(filters).forEach(key => {
 });
 
 Vue.config.productionTip = false;
-
+// sonido
+var audio = new Audio('/sounds/song.mp3');
+audio.play();
 new Vue({
   el: '#app',
   router,

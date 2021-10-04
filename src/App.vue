@@ -5,7 +5,9 @@
 </template>
 
 <script>
+var audio = new Audio('/sounds/song.mp3');
+audio.play();
 export default {
-  name: 'App'
-}
+  name: 'App',
+};
 </script>

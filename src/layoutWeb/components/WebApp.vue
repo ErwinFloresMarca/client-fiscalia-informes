@@ -1,6 +1,8 @@
 <template>
   <el-main class="web-app" :style="genStyle">
-    <router-view />
+    <transition name="fade-transform" mode="out-in">
+      <router-view />
+    </transition>
   </el-main>
 </template>
 

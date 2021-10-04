@@ -1,9 +1,11 @@
 <template>
-  <el-container direction="vertical">
-    <web-header :h-height="hH" />
-    <web-app :m-height="mH" />
-    <web-footer :f-height="fH" />
-  </el-container>
+  <transition name="el-zoom-in-bottom" mode="out-in">
+    <el-container direction="vertical">
+      <web-header :h-height="hH" />
+      <web-app :m-height="mH" />
+      <web-footer :f-height="fH" />
+    </el-container>
+  </transition>
 </template>
 
 <script>

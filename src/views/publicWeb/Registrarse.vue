@@ -68,7 +68,6 @@ export default {
             this.login();
           }).catch(err => {
             this.loading = false;
-            console.log('error al registrar: ', err);
             this.$message({
               message: err.data.error.message,
               type: 'error',

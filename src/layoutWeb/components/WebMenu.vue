@@ -4,7 +4,9 @@
     background-color="#285082"
     text-color="#ffffff"
     active-text-color="#ffdd00"
+    :collapse-transition="false"
     :default-active="selected"
+    menu-trigger="click"
   >
     <menu-item v-for="(r, index) in listWebRoutes" :key="'g-m-i-'+index" :route="r" />
   </el-menu>

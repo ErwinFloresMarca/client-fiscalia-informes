@@ -9,7 +9,7 @@
         :placeholder="fillPlaceHolder"
         :readonly="readonly"
         :disabled="disabled"
-        :autocomplete="autoComplete"
+        :autoComplete="autoComplete"
         :required="required"
         type="email"
         class="material-input"
@@ -24,7 +24,7 @@
         :placeholder="fillPlaceHolder"
         :readonly="readonly"
         :disabled="disabled"
-        :autocomplete="autoComplete"
+        :autoComplete="autoComplete"
         :required="required"
         type="url"
         class="material-input"
@@ -40,7 +40,7 @@
         :step="step"
         :readonly="readonly"
         :disabled="disabled"
-        :autocomplete="autoComplete"
+        :autoComplete="autoComplete"
         :max="max"
         :min="min"
         :minlength="minlength"
@@ -59,7 +59,7 @@
         :placeholder="fillPlaceHolder"
         :readonly="readonly"
         :disabled="disabled"
-        :autocomplete="autoComplete"
+        :autoComplete="autoComplete"
         :max="max"
         :min="min"
         :required="required"
@@ -76,7 +76,7 @@
         :placeholder="fillPlaceHolder"
         :readonly="readonly"
         :disabled="disabled"
-        :autocomplete="autoComplete"
+        :autoComplete="autoComplete"
         :required="required"
         type="tel"
         class="material-input"
@@ -91,7 +91,7 @@
         :placeholder="fillPlaceHolder"
         :readonly="readonly"
         :disabled="disabled"
-        :autocomplete="autoComplete"
+        :autoComplete="autoComplete"
         :minlength="minlength"
         :maxlength="maxlength"
         :required="required"
@@ -101,26 +101,70 @@
         @blur="handleMdBlur"
         @input="handleModelInput"
       >
+      <input
+        v-if="type === 'file'"
+        :name="name"
+        :placeholder="fillPlaceHolder"
+        :readonly="readonly"
+        :disabled="disabled"
+        :autoComplete="autoComplete"
+        :required="required"
+        type="file"
+        class="material-input"
+        @focus="handleMdFocus"
+        @blur="handleMdBlur"
+        @input="handleModelInput"
+      >
+      <el-date-picker
+        v-if="type === 'date'"
+        v-model="currentValue"
+        :name="name"
+        :placeholder="fillPlaceHolder"
+        :readonly="readonly"
+        :disabled="disabled"
+        :auto-complete="autoComplete"
+        :required="required"
+        style="width:100%;"
+        @focus="handleMdFocus"
+        @blur="handleMdBlur"
+        @input="handleModelInput"
+      />
+      <el-time-picker
+        v-if="type === 'time'"
+        v-model="currentValue"
+        :name="name"
+        :placeholder="fillPlaceHolder"
+        :readonly="readonly"
+        :disabled="disabled"
+        :auto-complete="autoComplete"
+        :required="required"
+        type="time"
+        style="width:100%;"
+        @focus="handleMdFocus"
+        @blur="handleMdBlur"
+        @input="handleModelInput"
+      />
       <span class="material-input-bar" />
       <label class="material-label">
         <slot />
       </label>
     </div>
+    <el-alert v-if="error" :title="error" type="error" effect="light" show-icon :closable="false" />
   </div>
 </template>
 
 <script>
 // source:https://github.com/wemake-services/vue-material-input/blob/master/src/components/MaterialInput.vue
-
+/*eslint no-console: 2*/
+/* eslint-disable*/
 export default {
   name: 'MdInput',
   props: {
-    /* eslint-disable */
     icon: String,
     name: String,
     type: {
       type: String,
-      default: 'text'
+      default: 'text',
     },
     value: [String, Number],
     placeholder: String,
@@ -133,22 +177,26 @@ export default {
     maxlength: Number,
     required: {
       type: Boolean,
-      default: true
+      default: true,
     },
     autoComplete: {
       type: String,
-      default: 'off'
+      default: 'off',
     },
     validateEvent: {
       type: Boolean,
-      default: true
+      default: true,
+    },
+    error: {
+      type: String,
+      default: null,
     }
   },
   data() {
     return {
       currentValue: this.value,
       focus: false,
-      fillPlaceHolder: null
+      fillPlaceHolder: null,
     }
   },
   computed: {
@@ -156,48 +204,48 @@ export default {
       return {
         'material--active': this.focus,
         'material--disabled': this.disabled,
-        'material--raised': Boolean(this.focus || this.currentValue) // has value
-      }
-    }
+        'material--raised': Boolean(this.focus || this.currentValue),
+      };
+    },
   },
   watch: {
     value(newValue) {
-      this.currentValue = newValue
-    }
+      this.currentValue = newValue;
+    },
   },
   methods: {
     handleModelInput(event) {
-      const value = event.target.value
-      this.$emit('input', value)
+      const value = event.target.value;
+      this.$emit('input', value);
       if (this.$parent.$options.componentName === 'ElFormItem') {
         if (this.validateEvent) {
-          this.$parent.$emit('el.form.change', [value])
+          this.$parent.$emit('el.form.change', [value]);
         }
       }
-      this.$emit('change', value)
+      this.$emit('change', value);
     },
     handleMdFocus(event) {
-      this.focus = true
-      this.$emit('focus', event)
+      this.focus = true;
+      this.$emit('focus', event);
       if (this.placeholder && this.placeholder !== '') {
-        this.fillPlaceHolder = this.placeholder
+        this.fillPlaceHolder = this.placeholder;
       }
     },
     handleMdBlur(event) {
-      this.focus = false
-      this.$emit('blur', event)
-      this.fillPlaceHolder = null
+      this.focus = false;
+      this.$emit('blur', event);
+      this.fillPlaceHolder = null;
       if (this.$parent.$options.componentName === 'ElFormItem') {
         if (this.validateEvent) {
-          this.$parent.$emit('el.form.blur', [this.currentValue])
+          this.$parent.$emit('el.form.blur', [this.currentValue]);
         }
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
-<style lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss" scoped>
   // Fonts:
   $font-size-base: 16px;
   $font-size-small: 18px;
@@ -214,7 +262,7 @@ export default {
   $color-white: white;
   $color-grey: #9E9E9E;
   $color-grey-light: #E0E0E0;
-  $color-blue: #2196F3;
+  $color-blue: forestgreen;
   $color-red: #F44336;
   $color-black: black;
   // Base clases:

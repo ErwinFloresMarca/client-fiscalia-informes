@@ -1,11 +1,12 @@
 <template>
-  <el-menu-item v-if="route.children === undefined" :index="route.name" @click="onClick(route)">{{ route.meta.title }}</el-menu-item>
-  <el-submenu v-else :index="route.name">
+  <el-menu-item v-if="route.children === undefined" :index="route.name" class="submenu-title-noDropdown" @click="onClick(route)">{{ route.meta.title }}</el-menu-item>
+  <el-submenu v-else ref="subMenu" :index="route.name" popper-append-to-body>
     <template slot="title">{{ route.meta.title }}</template>
     <template v-for="(r, index) in route.children">
       <el-menu-item
         :key="'sub-route-'+index"
         :index="r.name"
+        class="submenu-title-noDropdown"
         @click="onClick(r)"
       >{{ r.meta.title }}</el-menu-item>
     </template>
@@ -13,8 +14,10 @@
 </template>
 
 <script>
+import FixiOSBug from '../../layout/components/Sidebar/FixiOSBug';
 export default {
   name: 'MenuItem',
+  mixins: { FixiOSBug },
   props: {
     route: {
       type: Object,
