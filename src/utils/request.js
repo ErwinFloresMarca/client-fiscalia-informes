@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Message } from 'element-ui';
 import store from '@/store';
 import { getToken } from '@/utils/auth';
+import router from '@/router';
 
 // create an axios instance
 console.log('base api', process.env.VUE_APP_BASE_API);
@@ -25,6 +26,9 @@ service.interceptors.response.use(
       type: 'error',
       duration: 5 * 1000,
     });
+    if (error.response.status === 401) {
+      router.push({ path: `/login?redirect=${router.history.current.fullPath}` });
+    }
     return Promise.reject(error.response);
   },
 );
