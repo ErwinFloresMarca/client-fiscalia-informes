@@ -7,24 +7,25 @@ export { parseTime, formatTime } from '@/utils';
  * @param {string} label
  * @return {string}
  */
-function pluralize(time, label) {
+export function pluralize(time, label, addToPlurar) {
   if (time === 1) {
     return time + label;
   }
-  return time + label + 's';
+  return time + label + (addToPlurar || 's');
 }
 
 /**
- * @param {number} time
+ * @param {Date} time
  */
 export function timeAgo(time) {
-  const between = Date.now() / 1000 - Number(time);
+  if (typeof time === 'string') { time = new Date(time); }
+  const between = Date.now() / 1000 - Number(time) / 1000;
   if (between < 3600) {
-    return pluralize(~~(between / 60), ' minute');
+    return 'Hace ' + pluralize(~~(between / 60), ' minuto');
   } else if (between < 86400) {
-    return pluralize(~~(between / 3600), ' hour');
+    return 'Hace ' + pluralize(~~(between / 3600), ' hora');
   } else {
-    return pluralize(~~(between / 86400), ' day');
+    return 'Hace ' + pluralize(~~(between / 86400), ' dia');
   }
 }
 

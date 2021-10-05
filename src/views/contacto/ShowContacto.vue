@@ -25,7 +25,7 @@
           </el-link>
         </el-col>
         <el-col :span="24" :sm="12" :offset="0">
-          <label>Fecha De Registro: </label> <span>{{ contacto.fechaRegistro }}</span>
+          <label>Fecha De Registro: </label> <span>{{ fechaRegistro }}</span>
         </el-col>
         <el-col :span="24" :offset="0">
           <label>Mensaje: </label><br> <p>{{ contacto.mensaje }}</p>
@@ -37,6 +37,7 @@
 
 <script>
 import { ContactoResource } from '@/api/contacto';
+import { formatTime } from '@/utils';
 export default {
   name: 'ShowContacto',
   data() {
@@ -45,6 +46,11 @@ export default {
       idContacto: undefined,
       loading: true,
     };
+  },
+  computed: {
+    fechaRegistro() {
+      return formatTime(this.contacto.fechaRegistro);
+    },
   },
   created() {
     this.idContacto = this.$route.params.id;

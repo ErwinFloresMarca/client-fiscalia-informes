@@ -1,11 +1,11 @@
 <template>
   <div class="desc-container">
     <el-row :gutter="20" type="flex" justify="space-between">
-      <strong>{{ getNoticia.titulo }}</strong> <span>{{ getTimeAgo }}</span>
+      <strong>{{ getViaje.destino }}</strong> <span>{{ getTimeAgo }}</span>
     </el-row>
     <div class="desc">
       <div>
-        <p>{{ getNoticia.desc }}</p>
+        <p>{{ getViaje.resumen }}</p>
       </div>
     </div>
   </div>
@@ -14,19 +14,19 @@
 <script>
 import { timeAgo } from '@/filters';
 export default {
-  name: 'DescripcionNoticia',
+  name: 'DescripcionViaje',
   props: {
-    noticia: {
+    viaje: {
       type: Object,
       required: true,
     },
   },
   computed: {
-    getNoticia() {
-      return this.noticia;
+    getViaje() {
+      return this.viaje;
     },
     getTimeAgo() {
-      return timeAgo(this.getNoticia.fechaRegistro);
+      return timeAgo(this.getViaje.fechaViaje);
     },
   },
 };

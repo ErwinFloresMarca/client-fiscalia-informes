@@ -3,7 +3,6 @@
     <el-carousel
       height="200px"
       direction="horizontal"
-      :initial-index="0"
       :autoplay="true"
       :interval="3000"
       :loop="true"
@@ -18,7 +17,7 @@
 
 <script>
 export default {
-  name: 'ImagenesNoticia',
+  name: 'ImagenesViaje',
   props: {
     imagenes: {
       type: Array,

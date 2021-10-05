@@ -3,13 +3,13 @@
     <el-card shadow="hover" :body-style="{ padding: '20px' }">
       <el-row :gutter="20">
         <el-col v-if="getImagePosition === 'lefth'" :span="10" :offset="0">
-          <imagenes-noticia :imagenes="getNoticia.images" />
+          <imagenes-viaje :imagenes="getViaje.images" />
         </el-col>
         <el-col :span="14" :offset="0">
-          <descripcion-noticia :noticia="getNoticia" />
+          <descripcion-viaje :viaje="getViaje" />
         </el-col>
         <el-col v-if="getImagePosition === 'right'" :span="10" :offset="0">
-          <imagenes-noticia :imagenes="getNoticia.images" />
+          <imagenes-viaje :imagenes="getViaje.images" />
         </el-col>
       </el-row>
     </el-card>
@@ -17,16 +17,16 @@
 </template>
 
 <script>
-import DescripcionNoticia from './DescripcionNoticia.vue';
-import ImagenesNoticia from './ImagenesNoticia.vue';
+import ImagenesViaje from './ImagenesViaje.vue';
+import DescripcionViaje from './DescripcionViaje.vue';
 export default {
-  name: 'ShowMoticia',
+  name: 'ShowViaje',
   components: {
-    ImagenesNoticia,
-    DescripcionNoticia,
+    ImagenesViaje,
+    DescripcionViaje,
   },
   props: {
-    noticia: {
+    viaje: {
       type: Object,
       required: true,
     },
@@ -36,8 +36,8 @@ export default {
     },
   },
   computed: {
-    getNoticia() {
-      return this.noticia;
+    getViaje() {
+      return this.viaje;
     },
     getImagePosition() {
       return this.imagePosition;
@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss" scoped>
 .el-card{
-    max-width: 800px;
-    margin: 5px;
+  max-width: 800px;
+  margin: 5px;
 }
 </style>

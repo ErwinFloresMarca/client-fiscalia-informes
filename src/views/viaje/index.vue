@@ -36,7 +36,7 @@
           </el-row>
         </el-table-column>
       </el-table>
-      <pagination :total="total" :page="page" :limit="pagination.limit" @paginate="onPaginate" />
+      <pagination :total="total" :page="page" :limit="pagination.limit" @pagination="onPaginate" />
     </div>
   </div>
 </template>
@@ -46,6 +46,7 @@ import Title from '@/components/Title.vue';
 import FilterResourceHeader from '@/components/FilterRecource.vue/FilterResourceHeader.vue';
 import Pagination from '@/components/Pagination';
 import { ViajeResource } from '@/api/viaje';
+import { formatTime } from '@/utils';
 export default {
   name: 'Viajes',
   components: {
@@ -84,7 +85,6 @@ export default {
     },
   },
   created() {
-    this.getList();
   },
   methods: {
     onFilter(filter) {
@@ -102,6 +102,10 @@ export default {
         ... this.filter,
         ... this.pagination,
       }).then(resp => {
+        resp.data.forEach(e => {
+          e.fechaRegistro = formatTime(e.fechaRegistro);
+          e.fechaViaje = formatTime(e.fechaViaje);
+        });
         this.list = resp.data;
         this.loading = false;
       }).catch(err => {

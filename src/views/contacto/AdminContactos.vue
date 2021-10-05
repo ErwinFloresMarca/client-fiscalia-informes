@@ -49,7 +49,7 @@
           </el-row>
         </el-table-column>
       </el-table>
-      <pagination :total="total" :page="page" :limit="pagination.limit" @paginate="onPaginate" />
+      <pagination :total="total" :page="page" :limit="pagination.limit" @pagination="onPaginate" />
     </div>
   </div>
 </template>
@@ -58,6 +58,7 @@
 import { ContactoResource } from '@/api/contacto';
 import Pagination from '@/components/Pagination';
 import Title from '@/components/Title.vue';
+import { formatTime } from '@/utils';
 export default {
   name: 'AdminContactos',
   components: {
@@ -129,6 +130,9 @@ export default {
       ContactoResource.list(
         this.prepareQuery(),
       ).then(resp => {
+        resp.data.forEach(e => {
+          e.fechaRegistro = formatTime(e.fechaRegistro);
+        });
         this.list = resp.data;
         this.loading = false;
       }).catch(err => {

@@ -75,6 +75,7 @@ export default {
   created() {
     this.propertyKey = this.defaultProperty;
     this.searchProperty();
+    this.onFilter();
   },
   methods: {
     searchProperty() {
