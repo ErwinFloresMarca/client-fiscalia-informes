@@ -58,7 +58,7 @@
 
 <script>
 import { getToken } from '@/utils/auth';
-import { downloadFuleUrl } from '@/api/file';
+import { downloadFileUrl } from '@/api/file';
 import ShowDeletImage from '@/components/ShowDeletImage.vue';
 import UploadFile from '@/components/UploadFile.vue';
 export default {
@@ -94,7 +94,7 @@ export default {
       return this.idViaje;
     },
     downloadFileUrl() {
-      return downloadFuleUrl('');
+      return downloadFileUrl('');
     },
   },
   watch: {

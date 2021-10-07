@@ -50,7 +50,7 @@ import ErrorLog from '@/components/ErrorLog';
 import Screenfull from '@/components/Screenfull';
 import SizeSelect from '@/components/SizeSelect';
 import Search from '@/components/HeaderSearch';
-import { downloadFuleUrl } from '@/api/file';
+import { downloadFileUrl } from '@/api/file';
 
 export default {
   components: {
@@ -68,7 +68,7 @@ export default {
       'device',
     ]),
     getAvatarUrl() {
-      return downloadFuleUrl(this.avatar);
+      return downloadFileUrl(this.avatar);
     },
   },
   methods: {

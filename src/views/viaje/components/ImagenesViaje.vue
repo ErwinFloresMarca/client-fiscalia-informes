@@ -9,13 +9,14 @@
       trigger="hover"
     >
       <el-carousel-item v-for="(img, index) in getImagenes" :key="'image-'+index">
-        <el-image style="width: 100%; height: 200px" :src="img.url" fit="contain" />
+        <el-image style="width: 100%; height: 200px" :src="getDownloadFileUrl+img.url" fit="contain" />
       </el-carousel-item>
     </el-carousel>
   </div>
 </template>
 
 <script>
+import { downloadFileUrl } from '@/api/file';
 export default {
   name: 'ImagenesViaje',
   props: {
@@ -27,6 +28,9 @@ export default {
   computed: {
     getImagenes() {
       return this.imagenes;
+    },
+    getDownloadFileUrl() {
+      return downloadFileUrl('');
     },
   },
 };

@@ -74,9 +74,7 @@ export default {
         ViajeResource.count().then(resp => {
           this.cantViajes = resp.data.count;
           ContactoResource.count({
-            where: {
-              visto: { eq: false },
-            },
+            visto: { eq: false },
           }).then(resp => {
             this.cantNewContactos = resp.data.count;
             this.loading = false;

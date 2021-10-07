@@ -49,7 +49,7 @@
 <script>
 import PanThumb from '@/components/PanThumb';
 import ImageCropper from '@/components/ImageCropper';
-import { uploadFileUrl, downloadFuleUrl } from '@/api/file';
+import { uploadFileUrl, downloadFileUrl } from '@/api/file';
 import { UserResource } from '@/api/user';
 export default {
   name: 'UserCard',
@@ -84,7 +84,7 @@ export default {
       return uploadFileUrl();
     },
     getAvatarUrl() {
-      return downloadFuleUrl(this.getUser.avatar);
+      return downloadFileUrl(this.getUser.avatar);
     },
   },
   methods: {

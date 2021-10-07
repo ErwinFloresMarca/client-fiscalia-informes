@@ -47,7 +47,7 @@
 <script>
 import { getToken } from '@/utils/auth';
 import UploadFile from '@/components/UploadFile.vue';
-import { downloadFuleUrl } from '@/api/file';
+import { downloadFileUrl } from '@/api/file';
 import ShowDeletImage from '@/components/ShowDeletImage.vue';
 export default {
   name: 'FormNoticia',
@@ -81,7 +81,7 @@ export default {
       return this.idNoticia;
     },
     downloadFileUrl() {
-      return downloadFuleUrl('');
+      return downloadFileUrl('');
     },
   },
   watch: {

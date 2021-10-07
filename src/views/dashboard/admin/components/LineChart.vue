@@ -30,6 +30,10 @@ export default {
       type: Object,
       required: true,
     },
+    xAxisData: {
+      type: Array,
+      default: () => ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Savado', 'Domingo'],
+    },
   },
   data() {
     return {
@@ -61,10 +65,10 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons');
       this.setOptions(this.chartData);
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ expectedData, actualData, xAxisData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Savado', 'Dominfo'],
+          data: xAxisData,
           boundaryGap: false,
           axisTick: {
             show: false,

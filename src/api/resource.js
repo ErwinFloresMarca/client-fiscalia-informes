@@ -22,10 +22,11 @@ class Resource {
     });
   }
   count(query) {
+    console.log(query);
     return request({
       url: '/' + this.uri + '/count',
       method: 'get',
-      params: { filter: query },
+      params: { where: query },
     });
   }
   store(resource) {
