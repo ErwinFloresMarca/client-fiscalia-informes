@@ -20,7 +20,7 @@
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar? avatar: '/images/defaultUser.png'" class="user-avatar">
+          <img :src="avatar? getAvatarUrl: '/images/defaultUser.png'" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -50,6 +50,7 @@ import ErrorLog from '@/components/ErrorLog';
 import Screenfull from '@/components/Screenfull';
 import SizeSelect from '@/components/SizeSelect';
 import Search from '@/components/HeaderSearch';
+import { downloadFuleUrl } from '@/api/file';
 
 export default {
   components: {
@@ -66,6 +67,9 @@ export default {
       'avatar',
       'device',
     ]),
+    getAvatarUrl() {
+      return downloadFuleUrl(this.avatar);
+    },
   },
   methods: {
     toggleSideBar() {

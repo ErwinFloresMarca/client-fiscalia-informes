@@ -5,7 +5,6 @@ import { getToken } from '@/utils/auth';
 import router from '@/router';
 
 // create an axios instance
-console.log('base api', process.env.VUE_APP_BASE_API);
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
@@ -27,6 +26,7 @@ service.interceptors.response.use(
       duration: 5 * 1000,
     });
     if (error.response.status === 401) {
+      store.dispatch('user/resetToken');
       router.push({ path: `/login?redirect=${router.history.current.fullPath}` });
     }
     return Promise.reject(error.response);

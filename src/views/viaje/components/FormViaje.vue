@@ -18,50 +18,33 @@
           format="dd/MM/yyyy"
         />
       </el-form-item>
-      <!-- <el-form-item label="Imagenes">
-        <br>
-        <br>
-        <el-row :gutter="10" width="95%">
+    </el-form>
+    <el-form ref="formData2" :model="formData" :rules="rules" :inline="false" size="normal" label-position="top">
+      <el-form-item label="resumen" prop="resumen">
+        <el-input v-model="formData.resumen" type="textarea" :autosize="{minRows: 3, maxRows: 6}" />
+      </el-form-item>
+      <el-form-item label-width="0px">
+        <label>Imagenes: </label>
+        <el-row width="95%">
           <template v-if="formData.imagenes">
             <el-col
               v-for="(imagen, indexImagenes) in formData.imagenes"
               :key="'imagen'+indexImagenes"
               :span="8"
             >
-              <div
-                class="div-image img"
-                :style="'background-image: url('+imagen+');'"
-                @mouseover="showDeleteImage = indexImagenes"
-                @mouseout="showDeleteImage = -1"
-              >
-                <el-row v-show="indexImagenes === showDeleteImage" type="flex" justify="center" align="middle" class="row-image">
-                  <el-col :span="4"><el-button type="danger icon-img" circle @click="deleteImg(imagen)"><i class="el-icon-delete" /></el-button></el-col>
-                </el-row>
+              <div class="img-container">
+                <show-delet-image :url="downloadFileUrl+imagen.url" @delete="onDeleteFile(indexImagenes)" />
               </div>
             </el-col>
           </template>
-          <el-col :span="8">
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="24">
             <div class="image-slot">
-              <el-button type="success" round @click="imagecropperShow=true">Gargar Nuevo</el-button>
+              <upload-file upload-file acept-files="image/*" @success="onUploadFile" />
             </div>
           </el-col>
         </el-row>
-        <image-cropper
-          v-show="imagecropperShow"
-          :key="imagecropperKey"
-          :width="600"
-          :height="450"
-          :url="uploadImageUrl"
-          :headers="headers"
-          lang-type="es"
-          @close="imagecropperShow=false"
-          @crop-upload-success="cropSuccess"
-        />
-      </el-form-item> -->
-    </el-form>
-    <el-form ref="formData2" :model="formData" :rules="rules" :inline="false" size="normal" label-position="top">
-      <el-form-item label="resumen" prop="resumen">
-        <el-input v-model="formData.resumen" type="textarea" :autosize="{minRows: 3, maxRows: 6}" />
       </el-form-item>
       <el-form-item>
         <el-row :gutter="20" type="flex" justify="space-around">
@@ -74,12 +57,15 @@
 </template>
 
 <script>
-// import ImageCropper from '@/components/ImageCropper';
 import { getToken } from '@/utils/auth';
+import { downloadFuleUrl } from '@/api/file';
+import ShowDeletImage from '@/components/ShowDeletImage.vue';
+import UploadFile from '@/components/UploadFile.vue';
 export default {
   name: 'FormConvenio',
   components: {
-    // ImageCropper,
+    ShowDeletImage,
+    UploadFile,
   },
   props: {
     viaje: {
@@ -106,6 +92,9 @@ export default {
   computed: {
     id() {
       return this.idViaje;
+    },
+    downloadFileUrl() {
+      return downloadFuleUrl('');
     },
   },
   watch: {
@@ -136,21 +125,32 @@ export default {
     onCancel() {
       this.$emit('cancel', this.formData);
     },
+    onUploadFile(file) {
+      if (this.formData.imagenes) {
+        this.formData.imagenes = [... this.formData.imagenes, {
+          url: file.name,
+          type: file.type,
+        }];
+        this.formData = { ...this.formData };
+      } else {
+        this.formData.imagenes = [{
+          url: file.name,
+          type: file.type,
+        }];
+        this.formData = { ...this.formData };
+      }
+    },
+    onDeleteFile(index) {
+      this.formData.imagenes.splice(index, 1);
+      this.formData = { ...this.formData };
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.icon-img{
-    font-size: 30px;
-}
-.row-image{
-    width: 100%;
-    height: 150px;
-    background-color: rgba(0, 0, 0, 0.37);
-}
-.div-image{
-    width: 100%;
-    height: 150px;
+.img-container{
+  width: 100%;
+  padding: 5px;
 }
 </style>

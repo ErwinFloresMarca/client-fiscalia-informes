@@ -6,8 +6,14 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="user.avatar?user.avatar:'/images/defaultUser.png'" :height="'100px'" :width="'100px'" :hoverable="false">
-          <div>Hello</div>
+        <pan-thumb :image="user.avatar?getAvatarUrl:'/images/defaultUser.png'" :height="'100px'" :width="'100px'" :hoverable="false">
+          <br>
+          <el-button
+            type="primary"
+            icon="el-icon-upload"
+            circle
+            @click="imagecropperShow=true"
+          />
         </pan-thumb>
       </div>
       <div class="box-center">
@@ -26,14 +32,30 @@
       </div>
     </div>
 
+    <image-cropper
+      v-show="imagecropperShow"
+      :key="imagecropperKey+''"
+      :width="300"
+      :height="300"
+      :url="getUploadFileUrl"
+      lang-type="es"
+      :field="'avatar-'+getUser.name"
+      @close="close"
+      @crop-upload-success="cropSuccess"
+    />
   </el-card>
 </template>
 
 <script>
 import PanThumb from '@/components/PanThumb';
+import ImageCropper from '@/components/ImageCropper';
+import { uploadFileUrl, downloadFuleUrl } from '@/api/file';
+import { UserResource } from '@/api/user';
 export default {
+  name: 'UserCard',
   components: {
     PanThumb,
+    ImageCropper,
   },
   props: {
     user: {
@@ -46,6 +68,43 @@ export default {
           permissions: '',
         };
       },
+    },
+  },
+  data() {
+    return {
+      imagecropperShow: false,
+      imagecropperKey: 1,
+    };
+  },
+  computed: {
+    getUser() {
+      return this.user;
+    },
+    getUploadFileUrl() {
+      return uploadFileUrl();
+    },
+    getAvatarUrl() {
+      return downloadFuleUrl(this.getUser.avatar);
+    },
+  },
+  methods: {
+    cropSuccess(resData) {
+      this.imagecropperShow = false;
+      this.imagecropperKey = this.imagecropperKey + 1;
+      UserResource.getAuthUser().then(resp => {
+        UserResource.update(resp.data.id, { avatar: resData.files[0].originalname }).then(resp => {
+          this.$message({
+            message: 'Imagen de perfil actualizado.',
+            type: 'success',
+            showClose: true,
+            duration: 3000,
+          });
+          this.$store.dispatch('user/getInfo');
+        }).catch(err => console.log(err));
+      }).catch(err => console.log(err));
+    },
+    close() {
+      this.imagecropperShow = false;
     },
   },
 };

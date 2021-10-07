@@ -28,13 +28,6 @@ export default {
       skip: 0,
       limit: 5,
     }).then(resp => {
-      resp.data.forEach(element => {
-        element.images = [
-          { url: '/images/noticias/nt1.png' },
-          { url: '/images/noticias/nt2.png' },
-          { url: '/images/noticias/nt3.jpg' },
-        ];
-      });
       this.noticias = resp.data;
     }).catch(err => console.log(err));
   },

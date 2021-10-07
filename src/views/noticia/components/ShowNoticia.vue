@@ -3,7 +3,7 @@
     <el-card shadow="hover" :body-style="{ padding: '20px' }">
       <el-row :gutter="20">
         <el-col v-if="getImagePosition === 'lefth'" :span="10" :offset="0">
-          <imagenes-noticia :imagenes="getNoticia.images" />
+          <imagenes-noticia :imagenes="getNoticia.imagenes" />
         </el-col>
         <el-col :span="14" :offset="0">
           <descripcion-noticia :noticia="getNoticia" />
