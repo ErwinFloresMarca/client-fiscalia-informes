@@ -9,7 +9,7 @@
           <descripcion-viaje :viaje="getViaje" />
         </el-col>
         <el-col v-if="getImagePosition === 'right'" :span="10" :offset="0">
-          <imagenes-viaje :imagenes="getViaje.images" />
+          <imagenes-viaje :imagenes="getViaje.imagenes" />
         </el-col>
       </el-row>
     </el-card>

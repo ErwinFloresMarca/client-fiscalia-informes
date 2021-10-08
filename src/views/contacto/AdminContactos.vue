@@ -120,7 +120,8 @@ export default {
     prepareQuery() {
       return {
         order: `${this.propertyKey} ${this.orderKey}`,
-        ...this.pagination,
+        limit: this.pagination.limit,
+        skip: this.pagination.skip * this.pagination.limit,
         where: this.where,
       };
     },

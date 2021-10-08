@@ -9,7 +9,7 @@
           <descripcion-noticia :noticia="getNoticia" />
         </el-col>
         <el-col v-if="getImagePosition === 'right'" :span="10" :offset="0">
-          <imagenes-noticia :imagenes="getNoticia.images" />
+          <imagenes-noticia :imagenes="getNoticia.imagenes" />
         </el-col>
       </el-row>
     </el-card>

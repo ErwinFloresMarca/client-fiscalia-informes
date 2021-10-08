@@ -102,7 +102,8 @@ export default {
       this.getCant();
       NoticiaResource.list({
         ... this.filter,
-        ... this.pagination,
+        limit: this.pagination.limit,
+        skip: this.pagination.skip * this.pagination.limit,
       }).then(resp => {
         resp.data.forEach(e => {
           e.fechaRegistro = formatTime(e.fechaRegistro);
@@ -116,7 +117,7 @@ export default {
     },
     getCant() {
       NoticiaResource.count({
-        ...this.filter,
+        ...this.filter.where,
       }).then(resp => {
         this.total = resp.data.count;
       }).catch(err => {
