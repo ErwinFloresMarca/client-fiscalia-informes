@@ -25,16 +25,16 @@
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/profile/index">
-            <el-dropdown-item>Profile</el-dropdown-item>
+            <el-dropdown-item>Perfil</el-dropdown-item>
           </router-link>
           <router-link to="/">
             <el-dropdown-item>Inicio</el-dropdown-item>
           </router-link>
           <router-link to="/admin/dashboard">
-            <el-dropdown-item>Dashboard</el-dropdown-item>
+            <el-dropdown-item>Panel de Control</el-dropdown-item>
           </router-link>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">Cerrar Sesion</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
