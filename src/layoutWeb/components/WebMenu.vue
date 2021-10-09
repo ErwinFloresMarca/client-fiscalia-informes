@@ -8,7 +8,14 @@
     :default-active="selected"
     menu-trigger="click"
   >
-    <menu-item v-for="(r, index) in listWebRoutes" :key="'g-m-i-'+index" :route="r" />
+    <template v-if="!menuCollapse">
+      <menu-item v-for="(r, index) in listWebRoutes" :key="'g-m-i-'+index" :route="r" />
+    </template>
+    <el-submenu v-else index="1">
+      <template slot="title">Menu</template>
+      <menu-item v-for="(r, index) in listWebRoutes" :key="'g-m-i-'+index" :route="r" />
+    </el-submenu>
+
   </el-menu>
 </template>
 
@@ -23,6 +30,7 @@ export default {
   data() {
     return {
       selected: 'Home',
+      menuCollapse: false,
     };
   },
   computed: {
@@ -30,8 +38,23 @@ export default {
       return webRoutes.children;
     },
   },
+  watch: {
+
+  },
+  created() {
+    this.calculateCollapse();
+    window.addEventListener('resize', this.calculateCollapse);
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.calculateCollapse);
+  },
   mounted() {
     this.selected = this.$route.name;
+  },
+  methods: {
+    calculateCollapse() {
+      this.menuCollapse = document.getElementsByTagName('body')[0].offsetWidth < 531;
+    },
   },
 };
 </script>
