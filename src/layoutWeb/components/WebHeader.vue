@@ -1,8 +1,8 @@
 <template>
   <el-header class="web-header" :height="hHeight">
     <div class="images-container" width="90%">
-      <el-row type="flex" justify="space-between">
-        <div class="image-content">
+      <el-row type="flex" justify="space-around">
+        <div class="image-content hidden-xs-only">
           <el-image
             style="width: 220px; height: 140px"
             src="/images/imagen-e-p-bolivia.jpg"
@@ -16,14 +16,13 @@
             fit="contain"
           />
         </div>
-        <div class="image-content">
+        <div class="image-content hidden-xs-only">
           <el-image
             style="width: 80px; height: 140px"
             src="/images/potosiMapa.png"
             fit="contain"
           />
         </div>
-
       </el-row>
     </div>
     <el-row :gutter="20" type="flex" justify="center">
@@ -33,6 +32,7 @@
 </template>
 
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
 import WebMenu from './WebMenu.vue';
 export default {
   name: 'WebHeader',
