@@ -6,7 +6,7 @@ const state = {
   token: getToken(),
   name: '',
   avatar: '',
-  email: '',
+  ci: '',
   permissions: [],
 };
 
@@ -14,8 +14,8 @@ const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token;
   },
-  SET_EMAIL: (state, email) => {
-    state.email = email;
+  SET_CI: (state, ci) => {
+    state.ci = ci;
   },
   SET_NAME: (state, name) => {
     state.name = name;
@@ -31,9 +31,9 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { email, password } = userInfo;
+    const { ci, password } = userInfo;
     return new Promise((resolve, reject) => {
-      UserResource.login({ email: email.trim(), password: password }).then(response => {
+      UserResource.login({ ci: ci.trim(), password: password }).then(response => {
         const { data } = response;
         setToken(data.token);
         commit('SET_TOKEN', data.token);
@@ -54,7 +54,7 @@ const actions = {
           reject('Verification failed, please Login again.');
         }
 
-        const { permissions, name, avatar, email } = data;
+        const { permissions, name, avatar, ci } = data;
 
         // permissions must be a non-empty array
         if (!permissions || permissions.length <= 0) {
@@ -64,7 +64,7 @@ const actions = {
         commit('SET_PERMISSIONS', permissions);
         commit('SET_NAME', name);
         commit('SET_AVATAR', avatar);
-        commit('SET_EMAIL', email);
+        commit('SET_CI', ci);
         resolve(data);
       }).catch(error => {
         reject(error);

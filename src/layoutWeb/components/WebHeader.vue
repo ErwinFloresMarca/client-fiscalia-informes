@@ -2,42 +2,22 @@
   <el-header class="web-header" :height="hHeight">
     <div class="images-container" width="90%">
       <el-row type="flex" justify="space-around">
-        <div class="image-content hidden-xs-only">
-          <el-image
-            style="width: 220px; height: 140px"
-            src="/images/imagen-e-p-bolivia.jpg"
-            fit="contain"
-          />
-        </div>
-        <div class="image-content">
-          <el-image
-            style="width: 220px; height: 140px"
-            src="/images/iniafLogo.png"
-            fit="contain"
-          />
-        </div>
-        <div class="image-content hidden-xs-only">
-          <el-image
-            style="width: 80px; height: 140px"
-            src="/images/potosiMapa.png"
-            fit="contain"
-          />
-        </div>
+        <h1>UN HEADER</h1>
       </el-row>
     </div>
     <el-row :gutter="20" type="flex" justify="center">
-      <web-menu />
+      <!-- <web-menu /> -->
     </el-row>
   </el-header>
 </template>
 
 <script>
 import 'element-ui/lib/theme-chalk/display.css';
-import WebMenu from './WebMenu.vue';
+// import WebMenu from './WebMenu.vue';
 export default {
   name: 'WebHeader',
   components: {
-    WebMenu,
+    // WebMenu,
   },
   props: {
     hHeight: {

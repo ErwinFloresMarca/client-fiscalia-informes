@@ -25,11 +25,6 @@ export default {
 
 <style lang="scss" scoped>
   .web-app{
-    padding-top: 15px;
-    padding-bottom: 0px;
-    background-image: url('/images/fondo.jpg');
-    background-repeat: no-repeat;
-    background-position: right bottom;
-    background-size: 550px;
+    background-color: white;
   }
 </style>

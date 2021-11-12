@@ -2,19 +2,23 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" autocomplete="on" label-position="left">
 
+      <div class="image-container">
+        <img src="/images/logo_fge_256.png">
+      </div>
       <div class="title-container">
+        <h2 class="title">Ministerio Público</h2>
         <h3 class="title">Iniciar Sesion</h3>
       </div>
 
-      <el-form-item prop="email">
+      <el-form-item prop="ci">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="email"
-          v-model="loginForm.email"
-          placeholder="nombre de usuario o correo electronico"
-          name="email"
+          ref="ci"
+          v-model="loginForm.ci"
+          placeholder="Carnet de Identidad"
+          name="ci"
           type="text"
           tabindex="1"
           autocomplete="on"
@@ -44,9 +48,7 @@
           </span>
         </el-form-item>
       </el-tooltip>
-
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Iniciar Sesion</el-button>
-
+      <el-button :loading="loading" type="primary" size="default" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Iniciar Sesion</el-button>
     </el-form>
   </div>
 </template>
@@ -64,11 +66,11 @@ export default {
     };
     return {
       loginForm: {
-        name: '',
+        ci: '',
         password: '',
       },
       loginRules: {
-        email: [{ required: true, trigger: 'blur', message: 'el nombre de usuario o email es requerido' }],
+        ci: [{ required: true, trigger: 'blur', message: 'el carnet de identidad requerido' }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }],
       },
       passwordType: 'password',
@@ -95,8 +97,8 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.email === '') {
-      this.$refs.email.focus();
+    if (this.loginForm.ci === '') {
+      this.$refs.ci.focus();
     } else if (this.loginForm.password === '') {
       this.$refs.password.focus();
     }
@@ -192,6 +194,10 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+.image-container {
+  display: flex;
+  justify-content: center;
+}
 .login-container {
   min-height: 100%;
   width: 100%;

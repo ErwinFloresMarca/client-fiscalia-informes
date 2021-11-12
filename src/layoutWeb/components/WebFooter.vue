@@ -1,20 +1,7 @@
 <template>
   <el-footer class="web-footer" :height="fHeight">
     <el-row :gutter="20" type="flex" justify="center">
-      <h4><strong>“Innovación y saber local con la madre tierra”</strong></h4>
-    </el-row>
-    <hr class="rounded">
-    <el-row :gutter="20" type="flex" justify="center">
-      <h6><span>Instituto Nacional de Innovación Agropecuaria y Forestal –INIAF </span></h6>
-    </el-row>
-    <el-row :gutter="20" type="flex" justify="center">
-      <h6><span>Dirección: Calle Enrique Peñaranda N°46 Esq. Av. Las Banderas Zona Villa Fátima</span></h6>
-    </el-row>
-    <el-row :gutter="20" type="flex" justify="center">
-      <h6><span>Teléfonos: (591) 2-6244834 – Fax 2- 6244834</span></h6>
-    </el-row>
-    <el-row :gutter="20" type="flex" justify="center">
-      <h6><span>Potosí – Bolivia</span></h6>
+      <h1><strong>UN FOOTER</strong></h1>
     </el-row>
   </el-footer>
 </template>

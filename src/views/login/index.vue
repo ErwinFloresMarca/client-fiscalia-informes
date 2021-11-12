@@ -12,8 +12,8 @@
         </span>
         <el-input
           ref="username"
-          v-model="loginForm.email"
-          placeholder="Username or email"
+          v-model="loginForm.ci"
+          placeholder="Carnet de identidad"
           name="username"
           type="text"
           tabindex="1"
@@ -94,8 +94,8 @@ export default {
     // window.addEventListener('storage', this.afterQRScan)
   },
   mounted() {
-    if (this.loginForm.email === '') {
-      this.$refs.email.focus();
+    if (this.loginForm.ci === '') {
+      this.$refs.ci.focus();
     } else if (this.loginForm.password === '') {
       this.$refs.password.focus();
     }
