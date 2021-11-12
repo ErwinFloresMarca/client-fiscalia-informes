@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Title title="Nueva Noticia" />
+    <Title title="Nuevo Usuario" />
     <el-row :gutter="20" type="flex" justify="center">
       <div v-loading="loading" class="form-container">
-        <form-noticia @submit="onSubmit" @cancel="onCancel" />
+        <form-user show-passwords-fields @submit="onSubmit" @cancel="onCancel" />
       </div>
     </el-row>
   </div>
@@ -11,13 +11,14 @@
 
 <script>
 import Title from '@/components/Title.vue';
-import FormNoticia from './components/FormNoticia.vue';
-import { NoticiaResource } from '@/api/noticia';
+
+import { UserResource } from '@/api/user';
+import FormUser from './components/FormUser.vue';
 export default {
-  name: 'NuevaNoticia',
+  name: 'NewUser',
   components: {
-    FormNoticia,
     Title,
+    FormUser,
   },
   data() {
     return {
@@ -25,17 +26,18 @@ export default {
     };
   },
   methods: {
-    onSubmit(noticia) {
+    onSubmit(user) {
       this.loading = true;
-      NoticiaResource.store(noticia).then(resp => {
+      delete user.passwordConfirm;
+      UserResource.store(user).then(resp => {
         this.$message({
-          message: 'Noticia creada Exitosamente.',
+          message: 'Usuario creado Exitosamente.',
           type: 'success',
           showClose: true,
           duration: 3000,
         });
         this.loading = false;
-        this.$router.push({ name: 'AdminNoticias' });
+        this.$router.push({ name: 'AdminUsers' });
       }).catch(err => {
         this.loading = false;
         console.log(err);
@@ -54,7 +56,7 @@ export default {
         showClose: true,
         duration: 2000,
       });
-      this.$router.push({ name: 'AdminNoticias' });
+      this.$router.push({ name: 'AdminUsers' });
     },
   },
 };

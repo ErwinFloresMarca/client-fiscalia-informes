@@ -1,5 +1,5 @@
 module.exports = {
-  title: 'Web Iniaf Client',
+  title: 'Informes',
 
   /**
    * @type {boolean} true | false

@@ -10,14 +10,14 @@
     </el-row>
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+      <!-- <line-chart :chart-data="lineChartData" /> -->
     </el-row>
   </div>
 </template>
 
 <script>
 import PanelGroup from './components/PanelGroup';
-import LineChart from './components/LineChart';
+// import LineChart from './components/LineChart';
 import { generateRangeDates } from '@/utils/datesByReport';
 import { ContactoResource } from '@/api/contacto';
 import { NoticiaResource } from '@/api/noticia';
@@ -27,7 +27,7 @@ export default {
   name: 'DashboardAdmin',
   components: {
     PanelGroup,
-    LineChart,
+    // LineChart,
   },
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
     };
   },
   created() {
-    this.refreshData();
+    // this.refreshData();
   },
   methods: {
     async handleSetLineChartData(type) {

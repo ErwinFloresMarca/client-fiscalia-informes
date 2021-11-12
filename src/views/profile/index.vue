@@ -39,7 +39,7 @@ export default {
     ...mapGetters([
       'name',
       'avatar',
-      'email',
+      'ci',
       'permissions',
     ]),
   },
@@ -51,7 +51,7 @@ export default {
       this.user = {
         name: this.name,
         permissions: this.permissions,
-        email: this.email,
+        ci: this.ci,
         avatar: this.avatar,
       };
     },

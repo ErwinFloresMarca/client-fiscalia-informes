@@ -1,12 +1,12 @@
 <template>
-  <div class="viaje-container">
-    <Title title="VIAJES" />
+  <div class="usuarios-container">
+    <Title title="USUARIOS" />
     <filter-resource-header
       :list-properties="properties"
-      default-property="fechaRegistro"
+      default-property="created"
       @on-filter="onFilter"
     >
-      <el-button type="primary" icon="el-icon-plus" size="mini" @click="onAdd()">Nuevo</el-button>
+      <el-button v-permission="['CreateUser']" type="primary" icon="el-icon-plus" size="mini" @click="onAdd()">Nuevo</el-button>
     </filter-resource-header>
     <div class="list-container">
       <el-table :data="list" border stripe :loading="loading">
@@ -18,9 +18,12 @@
           :width="prop.width"
         >
           <template slot-scope="scope">
-            <el-tag v-if="prop.key === 'visto'" :type="scope.row.visto? 'success': 'danger'" size="mini" effect="dark">
-              {{ scope.row.visto? 'Visto': 'No Visto' }}
-            </el-tag>
+            <el-button v-if="prop.key === 'state'" :type="scope.row.state? 'success': 'danger'" size="mini" @click="onChangeState(scope.row.id, scope.row.state)">
+              {{ scope.row.state? 'Activo': 'Inactivo' }}
+            </el-button>
+            <span v-else-if="prop.key === 'created'">
+              {{ formatTime(scope.row.created, '{d}/{m}/{y}') }}
+            </span>
             <span v-else>
               {{ scope.row[prop.key] }}
             </span>
@@ -31,8 +34,8 @@
           width="200px"
         >
           <el-row slot-scope="scope" type="flex" justify="space-around">
-            <el-button type="primary" icon="el-icon-edit" size="mini" @click="onEdit(scope.row.id)">Editar</el-button>
-            <el-button type="danger" icon="el-icon-delete" size="mini" @click="onDelete(scope.row.id)">Eliminar</el-button>
+            <!-- <el-button v-permission="['UpdateUser']" type="primary" icon="el-icon-edit" size="mini" @click="onEdit(scope.row.id)">Editar</el-button> -->
+            <el-button v-permission="['DeleteUser']" type="danger" icon="el-icon-delete" size="mini" @click="onDelete(scope.row.id)">Eliminar</el-button>
           </el-row>
         </el-table-column>
       </el-table>
@@ -43,24 +46,27 @@
 
 <script>
 import Title from '@/components/Title.vue';
+import permission from '@/directive/permission/index.js';
 import FilterResourceHeader from '@/components/FilterRecource.vue/FilterResourceHeader.vue';
 import Pagination from '@/components/Pagination';
-import { ViajeResource } from '@/api/viaje';
+import { UserResource } from '@/api/user';
 import { formatTime } from '@/utils';
+import checkPermission from '@/utils/permission';
 export default {
-  name: 'Viajes',
+  name: 'Usuarios',
   components: {
     Title,
     FilterResourceHeader,
     Pagination,
   },
+  directives: { permission },
   data() {
     return {
       properties: [
-        { key: 'destino', label: 'Destino', filterable: true },
-        { key: 'resumen', label: 'Resumen', filterable: true },
-        { key: 'fechaViaje', label: 'Fecha del Viaje', filterable: false },
-        { key: 'fechaRegistro', label: 'Fecha de Registro', filterable: false },
+        { key: 'name', label: 'Nombre Completo', filterable: true },
+        { key: 'ci', label: 'Carnet de Identidad', filterable: true },
+        { key: 'created', label: 'Fecha de Registro', filterable: true },
+        { key: 'state', label: 'Estado', filterable: false },
       ],
       filter: {},
       list: [],
@@ -79,7 +85,7 @@ export default {
   },
   watch: {
     $route(newVal) {
-      if (newVal.name === 'AdminViajes') {
+      if (newVal.name === 'AdminUsers') {
         this.getList();
       }
     },
@@ -91,6 +97,23 @@ export default {
       this.filter = filter;
       this.getList();
     },
+    formatTime,
+    onChangeState(id, state) {
+      if (checkPermission(['UpdateUser'])) {
+        UserResource.update(id, { state: !state }).then(resp => {
+          this.$message({
+            message: 'Estado actualizado exitosamente!',
+            type: 'success',
+          });
+          this.getList();
+        }).catch(err => console.log(err));
+      } else {
+        this.$message({
+          message: 'No cuenta con Los permisos necesarios!',
+          type: 'info',
+        });
+      }
+    },
     onPaginate(pgn) {
       this.pagination = { skip: pgn.page - 1, limit: pgn.limit };
       this.getList();
@@ -98,14 +121,13 @@ export default {
     getList() {
       this.loading = true;
       this.getCant();
-      ViajeResource.list({
+      UserResource.list({
         ... this.filter,
         limit: this.pagination.limit,
         skip: this.pagination.skip * this.pagination.limit,
       }).then(resp => {
         resp.data.forEach(e => {
           e.fechaRegistro = formatTime(e.fechaRegistro);
-          e.fechaViaje = formatTime(e.fechaViaje);
         });
         this.list = resp.data;
         this.loading = false;
@@ -115,7 +137,7 @@ export default {
       });
     },
     getCant() {
-      ViajeResource.count({
+      UserResource.count({
         ...this.filter.where,
       }).then(resp => {
         this.total = resp.data.count;
@@ -124,17 +146,17 @@ export default {
       });
     },
     onAdd() {
-      this.$router.push({ name: 'NewViaje' });
+      this.$router.push({ name: 'NewUser' });
     },
-    onEdit(idViaje) {
-      this.$router.push({ name: 'EditViaje', params: {
-        id: idViaje,
+    onEdit(idUser) {
+      this.$router.push({ name: 'EditUser', params: {
+        id: idUser,
       }});
     },
-    onDelete(idViaje) {
-      ViajeResource.destroy(idViaje).then(resp => {
+    onDelete(idUser) {
+      UserResource.destroy(idUser).then(resp => {
         this.$message({
-          message: 'Viaje Eliminado exitosamente',
+          message: 'Usuario Eliminado exitosamente',
           type: 'success',
           showClose: true,
           duration: 3000,
@@ -147,7 +169,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.viaje-container{
+.usuarios-container{
     width: 100%;
     height: 100%;
 }

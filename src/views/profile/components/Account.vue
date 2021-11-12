@@ -3,8 +3,8 @@
     <el-form-item label="Nombre de usuario" prop="name">
       <el-input v-model="userForm.name" />
     </el-form-item>
-    <el-form-item label="Correo Electrónico" prop="email">
-      <el-input v-model="userForm.email" />
+    <el-form-item label="Carnet de identidad" prop="ci">
+      <el-input v-model="userForm.ci" />
     </el-form-item>
     <el-form-item label="Contraseña" prop="password">
       <el-input v-model="userForm.password" type="password" placeholder="deje vacio para no cambiar la contraseña." />
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { validEmail } from '@/utils/validate';
 import { UserResource } from '@/api/user';
 export default {
   props: {
@@ -28,18 +27,12 @@ export default {
       default: () => {
         return {
           name: '',
-          email: '',
+          ci: '',
         };
       },
     },
   },
   data() {
-    const validateEmail = (rule, value, cb) => {
-      if (!validEmail(value)) {
-        cb(new Error('El correo electronico no es valido'));
-      }
-      cb();
-    };
     const validatePasswordConfirm = (rule, value, cb) => {
       if (value !== this.userForm.password) {
         cb(new Error('las contraseñas no son iguales'));
@@ -49,14 +42,14 @@ export default {
     return {
       rules: {
         name: [{ required: true, message: 'En nombre de usuario es requerido', trigger: 'blur' }],
-        email: [{ required: true, validator: validateEmail, trigger: 'blur' }],
+        ci: [{ required: true, trigger: 'blur', message: 'El Carnet de identidad es obligatorio' }],
         passwordConfirm: [{ validator: validatePasswordConfirm, trigger: 'blur' }],
       },
       userForm: {},
     };
   },
   created() {
-    this.userForm = { name: this.user.name, email: this.user.email };
+    this.userForm = { name: this.user.name, ci: this.user.ci };
   },
   methods: {
     submit() {
@@ -65,7 +58,7 @@ export default {
           UserResource.getAuthUser().then(resp => {
             const userUp = {
               name: this.userForm.name,
-              email: this.userForm.email,
+              ci: this.userForm.ci,
               password: this.userForm.password,
             };
             if (!this.userForm.password) { delete userUp.password; }

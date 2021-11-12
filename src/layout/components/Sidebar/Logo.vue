@@ -24,8 +24,8 @@ export default {
   },
   data() {
     return {
-      title: 'Iniaf',
-      logo: '/images/iniafLogo.png',
+      title: 'Informes',
+      logo: '/images/logo_fge_256.png',
     };
   },
 };
@@ -55,8 +55,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 50px;
-      height: 20px;
+      width: 30px;
+      height: 30px;
       vertical-align: middle;
       margin-right: 12px;
     }

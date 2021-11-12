@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
+    <!-- <el-col :xs="12" :sm="12" :lg="8" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newContactos')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon icon-class="guide" class-name="card-panel-icon" />
@@ -38,18 +38,18 @@
           <count-to :start-val="0" :end-val="cantNoticias" :duration="3200" class="card-panel-num" />
         </div>
       </div>
-    </el-col>
+    </el-col> -->
   </el-row>
 </template>
 
 <script>
-import CountTo from 'vue-count-to';
+// import CountTo from 'vue-count-to';
 import { ContactoResource } from '@/api/contacto';
 import { NoticiaResource } from '@/api/noticia';
 import { ViajeResource } from '@/api/viaje';
 export default {
   components: {
-    CountTo,
+    // CountTo,
   },
   data() {
     return {
@@ -60,7 +60,6 @@ export default {
     };
   },
   created() {
-    this.getCants();
   },
   methods: {
     handleSetLineChartData(type) {
