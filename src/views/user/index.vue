@@ -34,7 +34,7 @@
           width="200px"
         >
           <el-row slot-scope="scope" type="flex" justify="space-around">
-            <!-- <el-button v-permission="['UpdateUser']" type="primary" icon="el-icon-edit" size="mini" @click="onEdit(scope.row.id)">Editar</el-button> -->
+            <el-button v-permission="['UpdateUser']" type="primary" icon="el-icon-edit" size="mini" @click="onEdit(scope.row.id)">Editar</el-button>
             <el-button v-permission="['DeleteUser']" type="danger" icon="el-icon-delete" size="mini" @click="onDelete(scope.row.id)">Eliminar</el-button>
           </el-row>
         </el-table-column>

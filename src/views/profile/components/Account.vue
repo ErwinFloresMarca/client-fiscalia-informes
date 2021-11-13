@@ -1,10 +1,10 @@
 <template>
   <el-form ref="userForm" :model="userForm" :rules="rules">
     <el-form-item label="Nombre de usuario" prop="name">
-      <el-input v-model="userForm.name" />
+      <el-input v-model="userForm.name" readonly />
     </el-form-item>
     <el-form-item label="Carnet de identidad" prop="ci">
-      <el-input v-model="userForm.ci" />
+      <el-input v-model="userForm.ci" readonly />
     </el-form-item>
     <el-form-item label="Contraseña" prop="password">
       <el-input v-model="userForm.password" type="password" placeholder="deje vacio para no cambiar la contraseña." />
@@ -62,7 +62,8 @@ export default {
               password: this.userForm.password,
             };
             if (!this.userForm.password) { delete userUp.password; }
-            UserResource.update(resp.data.id, userUp).then(resp => {
+            delete userUp.permissions;
+            UserResource.updateMyUser(userUp).then(resp => {
               this.$message({
                 message: 'El usuario fue actualizado exitosamente.',
                 type: 'success',

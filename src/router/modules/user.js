@@ -20,13 +20,13 @@ const UsersRouter = {
       hidden: true,
       meta: { title: 'Nuevo Usuario', permissions: ['CreateUser'], affix: false, noCache: true },
     },
-    // {
-    //   path: 'edit/:id',
-    //   component: () => import('@/views/viaje/EditViaje'),
-    //   name: 'EditViaje',
-    //   hidden: true,
-    //   meta: { title: 'Editar Viaje', permissions: ['ManageUltimosViajes'], affix: false, noCache: true },
-    // },
+    {
+      path: 'edit/:id',
+      component: () => import('@/views/user/EditUser'),
+      name: 'EditUser',
+      hidden: true,
+      meta: { title: 'Editar Usuario', permissions: ['UpdateUser'], affix: false, noCache: true },
+    },
   ],
 };
 

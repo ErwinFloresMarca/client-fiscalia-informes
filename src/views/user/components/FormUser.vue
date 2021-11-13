@@ -11,14 +11,25 @@
         />
       </el-form-item>
 
-      <el-form-item label="Contraseña" prop="password">
+      <el-form-item label="Permisos" label-position="top" size="normal">
+        <el-checkbox-group :value="selectPermissions">
+          <el-checkbox
+            v-for="permission in permissions"
+            :key="permission"
+            :label="permission"
+            @change="onTooglePermission(permission)"
+          />
+        </el-checkbox-group>
+      </el-form-item>
+
+      <el-form-item v-if="showPasswordsFields" label="Contraseña" prop="password">
         <el-input
           v-model="formData.password"
           type="password"
         />
       </el-form-item>
 
-      <el-form-item label="Repita la contraseña" prop="passwordConfirm">
+      <el-form-item v-if="showPasswordsFields" label="Repita la contraseña" prop="passwordConfirm">
         <el-input
           v-model="formData.passwordConfirm"
           type="password"
@@ -36,6 +47,7 @@
 </template>
 
 <script>
+import { UserResource } from '@/api/user';
 export default {
   name: 'FormUsuario',
   props: {
@@ -53,39 +65,27 @@ export default {
     },
   },
   data() {
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 8) {
-        callback(new Error('La contraseña no puede tener menos de 8 digitos'));
-      } else {
-        callback();
-      }
-    };
-    const validatePasswordConfirm = (rule, value, callback) => {
-      console.log(value, this.formData.password);
-      if (value !== this.formData.password) {
-        callback(new Error('esta contraseña es diferente'));
-      } else {
-        callback();
-      }
-    };
     return {
       formData: {
         password: '',
         passwordConfirm: '',
+        permissions: [],
       },
       rules: {
         name: [{ required: true, message: 'El Nombre es requerido', trigger: 'blur' }],
         ci: [{ required: true, message: 'El carnet de identidad es requerido', trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
-        passwordConfirm: [{ required: true, trigger: 'blur', validator: validatePasswordConfirm }],
       },
       headers: {},
       showDeleteImage: -1,
+      permissions: [],
     };
   },
   computed: {
     id() {
       return this.idUser;
+    },
+    selectPermissions() {
+      return this.formData.permissions;
     },
   },
   watch: {
@@ -99,6 +99,29 @@ export default {
       this.formData = { ...this.user };
       delete this.formData.id;
     }
+    this.getPermissions();
+    if (this.showPasswordsFields) {
+      const validatePassword = (rule, value, callback) => {
+        if (value.length < 8) {
+          callback(new Error('La contraseña no puede tener menos de 8 digitos'));
+        } else {
+          callback();
+        }
+      };
+      const validatePasswordConfirm = (rule, value, callback) => {
+        console.log(value, this.formData.password);
+        if (value !== this.formData.password) {
+          callback(new Error('esta contraseña es diferente'));
+        } else {
+          callback();
+        }
+      };
+      this.rules = {
+        ...this.rules,
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }],
+        passwordConfirm: [{ required: true, trigger: 'blur', validator: validatePasswordConfirm }],
+      };
+    }
   },
   methods: {
     onSubmit() {
@@ -110,6 +133,23 @@ export default {
     },
     onCancel() {
       this.$emit('cancel', this.formData);
+    },
+    getPermissions() {
+      UserResource.getPermissions().then(resp => {
+        this.permissions = resp.data;
+        if (!this.user) {
+          this.formData.permissions = [...this.permissions];
+        }
+      }).catch(error => console.log(error));
+    },
+    onTooglePermission(permission) {
+      if (this.formData.permissions.includes(permission)) {
+        this.formData.permissions = this.formData.permissions.filter(p => {
+          return p !== permission;
+        });
+      } else {
+        this.formData.permissions.push(permission);
+      }
     },
   },
 };

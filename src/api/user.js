@@ -18,6 +18,19 @@ export default class User extends Resource {
       data: resource,
     });
   }
+  updateMyUser(resource) {
+    return request({
+      url: '/' + this.uri + '/my-account',
+      method: 'patch',
+      data: resource,
+    });
+  }
+  getPermissions() {
+    return request({
+      url: '/' + this.uri + '/permissions',
+      method: 'get',
+    });
+  }
 }
 
 export const UserResource = new User();

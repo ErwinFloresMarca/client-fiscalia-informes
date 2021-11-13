@@ -19,9 +19,6 @@
 import PanelGroup from './components/PanelGroup';
 // import LineChart from './components/LineChart';
 import { generateRangeDates } from '@/utils/datesByReport';
-import { ContactoResource } from '@/api/contacto';
-import { NoticiaResource } from '@/api/noticia';
-import { ViajeResource } from '@/api/viaje';
 
 export default {
   name: 'DashboardAdmin',
@@ -69,35 +66,6 @@ export default {
     },
     async generateReport(listRanges, type) {
       listRanges.map(async(e, i) => {
-        switch (type) {
-          case 'contactos':
-            ContactoResource.count({
-              fechaRegistro: {
-                between: e,
-              },
-            }).then(resp => {
-              this.newContactos[i] = resp.data.count;
-              this.changeLocalDataChart();
-            }); break;
-          case 'noticias':
-            NoticiaResource.count({
-              fechaRegistro: {
-                between: e,
-              },
-            }).then(resp => {
-              this.noticias[i] = resp.data.count;
-              this.changeLocalDataChart();
-            }); break;
-          case 'viajes':
-            ViajeResource.count({
-              fechaRegistro: {
-                between: e,
-              },
-            }).then(resp => {
-              this.viajes[i] = resp.data.count;
-              this.changeLocalDataChart();
-            }); break;
-        }
       });
     },
   },

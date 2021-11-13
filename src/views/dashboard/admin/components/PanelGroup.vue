@@ -44,9 +44,6 @@
 
 <script>
 // import CountTo from 'vue-count-to';
-import { ContactoResource } from '@/api/contacto';
-import { NoticiaResource } from '@/api/noticia';
-import { ViajeResource } from '@/api/viaje';
 export default {
   components: {
     // CountTo,
@@ -68,27 +65,6 @@ export default {
     },
     getCants() {
       this.loading = true;
-      NoticiaResource.count().then(resp => {
-        this.cantNoticias = resp.data.count;
-        ViajeResource.count().then(resp => {
-          this.cantViajes = resp.data.count;
-          ContactoResource.count({
-            visto: { eq: false },
-          }).then(resp => {
-            this.cantNewContactos = resp.data.count;
-            this.loading = false;
-          }).catch(err => {
-            console.log(err);
-            this.loading = false;
-          });
-        }).catch(err => {
-          console.log(err);
-          this.loading = false;
-        });
-      }).catch(err => {
-        console.log(err);
-        this.loading = false;
-      });
     },
   },
 };
