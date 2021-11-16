@@ -1,12 +1,12 @@
 <template>
-  <div class="usuarios-container">
-    <Title title="USUARIOS" />
+  <div class="informes-fotografdicos-container">
+    <Title title="INFORMES FOTOGRAFICOS" />
     <filter-resource-header
       :list-properties="properties"
-      default-property="created"
+      default-property="cud"
       @on-filter="onFilter"
     >
-      <el-button v-permission="['CreateUser']" type="primary" icon="el-icon-plus" size="mini" @click="onAdd()">Nuevo</el-button>
+      <el-button v-permission="['CreateInFoto']" type="primary" icon="el-icon-plus" size="mini" @click="onAdd()">Nuevo</el-button>
     </filter-resource-header>
     <div class="list-container">
       <el-table :data="list" border stripe :loading="loading">
@@ -54,11 +54,11 @@ import Title from '@/components/Title.vue';
 import permission from '@/directive/permission/index.js';
 import FilterResourceHeader from '@/components/FilterRecource.vue/FilterResourceHeader.vue';
 import Pagination from '@/components/Pagination';
-import { UserResource } from '@/api/user';
+import { InformeFotograficoResource } from '@/api/informeFotografico';
 import { formatTime } from '@/utils';
-import checkPermission from '@/utils/permission';
+// import checkPermission from '@/utils/permission';
 export default {
-  name: 'Usuarios',
+  name: 'InformesFotograficos',
   components: {
     Title,
     FilterResourceHeader,
@@ -68,10 +68,12 @@ export default {
   data() {
     return {
       properties: [
-        { key: 'name', label: 'Nombre Completo', filterable: true },
-        { key: 'ci', label: 'Carnet de Identidad', filterable: true },
-        { key: 'created', label: 'Fecha de Registro', filterable: true },
-        { key: 'state', label: 'Estado', filterable: false },
+        { key: 'cud', label: 'CUD', filterable: true },
+        { key: 'victima', label: 'Victima', filterable: true },
+        { key: 'denunciado', label: 'Denunciado', filterable: true },
+        { key: 'propietarioDispositivo', label: 'Propietario Disp.', filterable: false },
+        { key: 'marcaDispositivo', label: 'Marca Disp.', filterable: true },
+        { key: 'nombreDispositivo', label: 'Nombre Disp.', filterable: true },
       ],
       filter: {},
       list: [],
@@ -103,22 +105,6 @@ export default {
       this.getList();
     },
     formatTime,
-    onChangeState(id, state) {
-      if (checkPermission(['UpdateUser'])) {
-        UserResource.update(id, { state: !state }).then(resp => {
-          this.$message({
-            message: 'Estado actualizado exitosamente!',
-            type: 'success',
-          });
-          this.getList();
-        }).catch(err => console.log(err));
-      } else {
-        this.$message({
-          message: 'No cuenta con Los permisos necesarios!',
-          type: 'info',
-        });
-      }
-    },
     onPaginate(pgn) {
       this.pagination = { skip: pgn.page - 1, limit: pgn.limit };
       this.getList();
@@ -126,7 +112,7 @@ export default {
     getList() {
       this.loading = true;
       this.getCant();
-      UserResource.list({
+      InformeFotograficoResource.list({
         ... this.filter,
         limit: this.pagination.limit,
         skip: this.pagination.skip * this.pagination.limit,
@@ -142,7 +128,7 @@ export default {
       });
     },
     getCant() {
-      UserResource.count({
+      InformeFotograficoResource.count({
         ...this.filter.where,
       }).then(resp => {
         this.total = resp.data.count;
@@ -151,17 +137,17 @@ export default {
       });
     },
     onAdd() {
-      this.$router.push({ name: 'NewUser' });
+      this.$router.push({ name: 'NewInformeFotografico' });
     },
-    onEdit(idUser) {
-      this.$router.push({ name: 'EditUser', params: {
-        id: idUser,
+    onEdit(idInformeFotografico) {
+      this.$router.push({ name: 'EditInformeFotografico', params: {
+        id: idInformeFotografico,
       }});
     },
-    onDelete(idUser) {
-      UserResource.destroy(idUser).then(resp => {
+    onDelete(idInformeFotografico) {
+      InformeFotograficoResource.destroy(idInformeFotografico).then(resp => {
         this.$message({
-          message: 'Usuario Eliminado exitosamente',
+          message: 'Informe Fotografico Eliminado exitosamente',
           type: 'success',
           showClose: true,
           duration: 3000,
@@ -174,7 +160,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.usuarios-container{
+.informes-fotografdicos-container{
     width: 100%;
     height: 100%;
 }
