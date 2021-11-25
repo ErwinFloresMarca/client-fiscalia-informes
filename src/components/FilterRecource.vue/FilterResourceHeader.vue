@@ -20,6 +20,7 @@
         :key="property.key"
         :label="property.label"
         :value="property.key"
+        :disabled="property.disabled"
       />
     </el-select>
     <el-select v-model="orderKey" class="filter-item" placeholder="ordenar" size="mini">
