@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Title title="NUEVO INFORME FOTOGRAFICOS" />
+    <Title title="NUEVO FISCAL" />
     <el-row :gutter="20" type="flex" justify="center">
       <div v-loading="loading" class="form-container">
-        <form-informe-fotografico @submit="onSubmit" @cancel="onCancel" />
+        <form-fiscal @submit="onSubmit" @cancel="onCancel" />
       </div>
     </el-row>
   </div>
@@ -12,13 +12,13 @@
 <script>
 import Title from '@/components/Title.vue';
 
-import { InformeFotograficoResource } from '@/api/informeFotografico';
-import FormInformeFotografico from './components/formInformeFotografico.vue';
+import { FiscalResource } from '@/api/fiscal';
+import FormFiscal from './components/FormFiscal.vue';
 export default {
-  name: 'NewInformeFotografico',
+  name: 'NewFiscal',
   components: {
     Title,
-    FormInformeFotografico,
+    FormFiscal,
   },
   data() {
     return {
@@ -26,18 +26,17 @@ export default {
     };
   },
   methods: {
-    onSubmit(user) {
+    onSubmit(fiscal) {
       this.loading = true;
-      delete user.passwordConfirm;
-      InformeFotograficoResource.store(user).then(resp => {
+      FiscalResource.store(fiscal).then(resp => {
         this.$message({
-          message: 'Informe Fotografico creado Exitosamente.',
+          message: 'Fiscal creado Exitosamente.',
           type: 'success',
           showClose: true,
           duration: 3000,
         });
         this.loading = false;
-        this.$router.push({ name: 'AdminInformesFotograficos' });
+        this.$router.push({ name: 'AdminFiscales' });
       }).catch(err => {
         this.loading = false;
         console.log(err);
@@ -56,7 +55,7 @@ export default {
         showClose: true,
         duration: 2000,
       });
-      this.$router.push({ name: 'AdminInformesFotograficos' });
+      this.$router.push({ name: 'AdminFiscales' });
     },
   },
 };
@@ -64,8 +63,7 @@ export default {
 
 <style lang="scss" scoped>
 .form-container{
-    width: 100%;
-    max-width: 700px;
+    max-width: 500px;
     min-width: 400px;
 }
 </style>

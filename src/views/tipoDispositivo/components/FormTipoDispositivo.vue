@@ -67,17 +67,13 @@
 export default {
   name: 'FormTipoDispositivo',
   props: {
-    user: {
+    tipoDispositivo: {
       type: Object,
       default: null,
     },
-    idUser: {
+    idTipoDispositivo: {
       type: String,
       default: null,
-    },
-    showPasswordsFields: {
-      type: Boolean,
-      default: false,
     },
   },
   data() {
@@ -107,18 +103,18 @@ export default {
   },
   computed: {
     id() {
-      return this.idUser;
+      return this.idTipoDispositivo;
     },
   },
   watch: {
-    user(newVal) {
-      this.formData = { ... this.user };
+    tipoDispositivo(newVal) {
+      this.formData = { ... this.tipoDispositivo };
       delete this.formData.id;
     },
   },
   created() {
     if (this.id) {
-      this.formData = { ...this.user };
+      this.formData = { ...this.tipoDispositivo };
       delete this.formData.id;
     }
   },

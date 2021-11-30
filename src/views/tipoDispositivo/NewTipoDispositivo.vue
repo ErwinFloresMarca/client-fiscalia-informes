@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Title title="Nuevo Tipo De Dispositivo" />
+    <Title title="NUEVO TIPO DE DISPOSITIVO" />
     <el-row :gutter="20" type="flex" justify="center">
       <div v-loading="loading" class="form-container">
         <form-tipo-dispositivo @submit="onSubmit" @cancel="onCancel" />

@@ -1,6 +1,6 @@
 <template>
-  <div class="usuarios-container">
-    <Title title="TIPOS DE DISPOSITIVOS" />
+  <div class="page-container">
+    <Title title="FISCALES" />
     <filter-resource-header
       :list-properties="properties"
       default-property="created"
@@ -23,23 +23,7 @@
           :width="prop.width"
         >
           <template slot-scope="scope">
-            <template v-if="prop.key === 'atributos'">
-              <el-row v-for="att in Object.keys(scope.row.atributos)" :key="att" :gutter="20" type="flex" justify="space-between">
-                <template v-if="scope.row.atributos[att]">
-                  <el-col :span="6" :offset="0">
-                    {{ att }}
-                  </el-col>
-                  <el-col :span="6" :offset="0">
-                    {{ scope.row.atributos[att].type }}
-                  </el-col>
-                  <el-col :span="6" :offset="0">
-                    <el-tag v-if="scope.row.atributos[att].required" type="success" size="mini" effect="dark">Requerido</el-tag>
-                    <el-tag v-else type="danger" size="mini" effect="dark">No requerido</el-tag>
-                  </el-col>
-                </template>
-              </el-row>
-            </template>
-            <span v-else-if="prop.key === 'created'">
+            <span v-if="prop.key === 'created'">
               {{ formatTime(scope.row.created, '{d}/{m}/{y}') }}
             </span>
             <span v-else>
@@ -67,11 +51,10 @@ import Title from '@/components/Title.vue';
 import permission from '@/directive/permission/index.js';
 import FilterResourceHeader from '@/components/FilterRecource.vue/FilterResourceHeader.vue';
 import Pagination from '@/components/Pagination';
-import { TipoDispositivoResource } from '@/api/tipoDispositivo';
+import { FiscalResource } from '@/api/fiscal';
 import { formatTime } from '@/utils';
-import checkPermission from '@/utils/permission';
 export default {
-  name: 'TipoDispositivos',
+  name: 'Fiscales',
   components: {
     Title,
     FilterResourceHeader,
@@ -81,8 +64,11 @@ export default {
   data() {
     return {
       properties: [
-        { key: 'tipo', label: 'Tipo', filterable: true },
-        { key: 'atributos', label: 'Atributos', filterable: false, disabled: true },
+        { key: 'nombres', label: 'Nombres', filterable: true },
+        { key: 'apPaterno', label: 'Ap. Paterno', filterable: true },
+        { key: 'apMaterno', label: 'Ap. Materno', filterable: true },
+        { key: 'ci', label: 'C.I.', filterable: true },
+        { key: 'cargo', label: 'Cargo', filterable: true },
         { key: 'created', label: 'Fecha de Registro', filterable: false },
       ],
       filter: {},
@@ -102,7 +88,7 @@ export default {
   },
   watch: {
     $route(newVal) {
-      if (newVal.name === 'AdminTipoDispositivos') {
+      if (newVal.name === 'AdminFiscales') {
         this.getList();
       }
     },
@@ -115,22 +101,6 @@ export default {
       this.getList();
     },
     formatTime,
-    onChangeState(id, state) {
-      if (checkPermission(['UpdateInFoto'])) {
-        TipoDispositivoResource.update(id, { state: !state }).then(resp => {
-          this.$message({
-            message: 'Estado actualizado exitosamente!',
-            type: 'success',
-          });
-          this.getList();
-        }).catch(err => console.log(err));
-      } else {
-        this.$message({
-          message: 'No cuenta con Los permisos necesarios!',
-          type: 'info',
-        });
-      }
-    },
     onPaginate(pgn) {
       this.pagination = { skip: pgn.page - 1, limit: pgn.limit };
       this.getList();
@@ -138,7 +108,7 @@ export default {
     getList() {
       this.loading = true;
       this.getCant();
-      TipoDispositivoResource.list({
+      FiscalResource.list({
         ... this.filter,
         limit: this.pagination.limit,
         skip: this.pagination.skip * this.pagination.limit,
@@ -154,7 +124,7 @@ export default {
       });
     },
     getCant() {
-      TipoDispositivoResource.count({
+      FiscalResource.count({
         ...this.filter.where,
       }).then(resp => {
         this.total = resp.data.count;
@@ -163,17 +133,17 @@ export default {
       });
     },
     onAdd() {
-      this.$router.push({ name: 'NewTipoDispositivo' });
+      this.$router.push({ name: 'NewFiscal' });
     },
     onEdit(id) {
-      this.$router.push({ name: 'EditTipoDispositivo', params: {
+      this.$router.push({ name: 'EditFiscal', params: {
         id: id,
       }});
     },
     onDelete(id) {
-      TipoDispositivoResource.destroy(id).then(resp => {
+      FiscalResource.destroy(id).then(resp => {
         this.$message({
-          message: 'Tipo de Dispositivo Eliminado exitosamente',
+          message: 'Fiscal Eliminado exitosamente',
           type: 'success',
           showClose: true,
           duration: 3000,
@@ -186,7 +156,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.usuarios-container{
+.page-container{
     width: 100%;
     height: 100%;
 }

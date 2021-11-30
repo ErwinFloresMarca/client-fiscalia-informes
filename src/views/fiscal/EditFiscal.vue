@@ -1,9 +1,9 @@
 <template>
   <div>
-    <Title title="EDITAR TIPO DE DISPOSITIVO" />
+    <Title title="EDITAR FISCAL" />
     <el-row :gutter="20" type="flex" justify="center">
       <div v-loading="loading" class="form-container">
-        <form-tipo-dispositivo :id-tipo-dispositivo="idTipoDispositivo" :tipo-dispositivo="tipoDispositivo" @submit="onSubmit" @cancel="onCancel" />
+        <form-fiscal :id-fiscal="idFiscal" :fiscal="fiscal" @submit="onSubmit" @cancel="onCancel" />
       </div>
     </el-row>
   </div>
@@ -11,24 +11,24 @@
 
 <script>
 import Title from '@/components/Title.vue';
-import { TipoDispositivoResource } from '@/api/tipoDispositivo';
-import FormTipoDispositivo from './components/FormTipoDispositivo.vue';
+import { FiscalResource } from '@/api/fiscal';
+import FormFiscal from './components/FormFiscal.vue';
 export default {
-  name: 'EditTipoDispositivo',
+  name: 'EditFiscal',
   components: {
     Title,
-    FormTipoDispositivo,
+    FormFiscal,
   },
   data() {
     return {
-      idTipoDispositivo: undefined,
-      tipoDispositivo: undefined,
+      idFiscal: undefined,
+      fiscal: undefined,
       loading: true,
     };
   },
   watch: {
     $route(newVal) {
-      if (newVal.name === 'EditTipoDispositivo') {
+      if (newVal.name === 'EditFiscal') {
         this.init();
       }
     },
@@ -38,33 +38,33 @@ export default {
   },
   methods: {
     init() {
-      this.idTipoDispositivo = this.$route.params.id;
+      this.idFiscal = this.$route.params.id;
       this.loading = true;
-      TipoDispositivoResource.get(this.idTipoDispositivo).then(resp => {
-        this.tipoDispositivo = resp.data;
+      FiscalResource.get(this.idFiscal).then(resp => {
+        this.fiscal = resp.data;
         this.loading = false;
       }).catch(err => {
         console.log(err);
         this.$message({
-          message: 'No existe un tipo de dispositivo con este id: ' + this.idTipoDispositivo,
+          message: 'No existe un Fiscal con este id: ' + this.idFiscal,
           type: 'error',
           showClose: true,
           duration: 4000,
         });
-        this.$router.push({ name: 'AdminTipoDispositivos' });
+        this.$router.push({ name: 'AdminFiscales' });
         this.loading = false;
       });
     },
-    onSubmit(tipoDispositivo) {
+    onSubmit(fiscal) {
       this.loading = true;
-      TipoDispositivoResource.update(this.idTipoDispositivo, tipoDispositivo).then(resp => {
+      FiscalResource.update(this.idFiscal, fiscal).then(resp => {
         this.$message({
-          message: 'Tipo de Dispositivo actualizado Exitosamente.',
+          message: 'Fiscal actualizado Exitosamente.',
           type: 'success',
           showClose: true,
           duration: 3000,
         });
-        this.$router.push({ name: 'AdminTipoDispositivos' });
+        this.$router.push({ name: 'AdminFiscales' });
         this.loading = false;
       }).catch(err => {
         console.log(err);
@@ -84,7 +84,7 @@ export default {
         showClose: true,
         duration: 2000,
       });
-      this.$router.push({ name: 'AdminTipoDispositivos' });
+      this.$router.push({ name: 'AdminFiscales' });
     },
   },
 };

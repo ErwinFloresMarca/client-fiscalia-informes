@@ -1,93 +1,68 @@
 <template>
   <div class="form-container">
-    <el-form ref="formData" :model="formData" :rules="rules" label-width="100px" label-position="lefth">
-      <el-form-item label="CUD" size="normal">
-        <el-input v-model="formData.cud" type="text" placeholder="CUD" size="normal" />
-      </el-form-item>
-      <el-form-item label="Carnet De Identidad" prop="ci">
-        <el-input
-          v-model="formData.ci"
-          type="text"
-        />
-      </el-form-item>
-
-      <el-form-item label="Permisos" label-position="top" size="normal">
-        <el-checkbox-group :value="selectPermissions">
-          <el-checkbox
-            v-for="permission in permissions"
-            :key="permission"
-            :label="permission"
-            @change="onTooglePermission(permission)"
-          />
-        </el-checkbox-group>
-      </el-form-item>
-
-      <el-form-item v-if="showPasswordsFields" label="Contraseña" prop="password">
-        <el-input
-          v-model="formData.password"
-          type="password"
-        />
-      </el-form-item>
-
-      <el-form-item v-if="showPasswordsFields" label="Repita la contraseña" prop="passwordConfirm">
-        <el-input
-          v-model="formData.passwordConfirm"
-          type="password"
-        />
-      </el-form-item>
-
-      <el-form-item label-width="0px">
-        <el-row :gutter="20" type="flex" justify="space-around">
-          <el-button @click="onCancel()">Cancelar</el-button>
-          <el-button type="primary" @click="onSubmit()">Guardar</el-button>
-        </el-row>
-      </el-form-item>
-    </el-form>
+    <el-steps :active="step" finish-status="success" align-center>
+      <el-step title="CUD" />
+      <el-step title="Dispositivo" />
+      <el-step title="Fotos" />
+    </el-steps>
+    <transition name="el-zoom-in-top">
+      <div v-show="step == 0" class="step-container">
+        <el-form ref="fst1" :model="form" :rules="rulesfst1" label-width="50%" label-position="right" size="normal">
+          <el-form-item label="CUD" prop="casoId">
+            <select-caso v-model="form.casoId" @change="cambioCaso" />
+          </el-form-item>
+          <el-form-item v-if="caso" label-width="0">
+            <show-caso :caso="caso" @change="cambioCaso(form.casoId)" />
+          </el-form-item>
+          <el-form-item label-width="0">
+            <el-row :gutter="20" type="flex" justify="space-around">
+              <el-button type="danger" @click="onCancel">CANCELAR</el-button>
+              <el-button type="primary" @click="step2()">SIGUIENTE</el-button>
+            </el-row>
+          </el-form-item>
+        </el-form>
+      </div>
+    </transition>
+    <transition name="el-zoom-in-bottom">
+      <div v-show="step == 1" class="step-container">
+        2
+      </div>
+    </transition>
+    <transition name="el-zoom-in-top">
+      <div v-show="step == 2" class="step-container">
+        3
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
+import SelectCaso from '@/views/caso/components/SelectCaso.vue';
+import { CasoResource } from '@/api/caso';
+import ShowCaso from '@/views/caso/components/ShowCaso.vue';
 export default {
   name: 'FormInformeFotografico',
-  props: {
-    informeFotografico: {
-      type: Object,
-      default: null,
-    },
-    idInformeFotografico: {
-      type: String,
-      default: null,
-    },
-  },
+  components: { SelectCaso, ShowCaso },
   data() {
     return {
-      formData: {
+      form: {
       },
-      rules: {
-        name: [{ required: true, message: 'El Nombre es requerido', trigger: 'blur' }],
-        ci: [{ required: true, message: 'El carnet de identidad es requerido', trigger: 'blur' }],
+      rulesfst1: {
+        casoId: [{ required: true, message: 'Debe escojer un CUD', trigger: 'blur' }],
       },
-      headers: {},
-      showDeleteImage: -1,
-      permissions: [],
+      rulesfst2: {
+      },
+      rulesfst3: {
+      },
+      caso: undefined,
+      step: 0,
     };
   },
   computed: {
-    id() {
-      return this.idInformeFotografico;
-    },
   },
   watch: {
-    informeFotografico(newVal) {
-      this.formData = { ... this.informeFotografico };
-      delete this.formData.id;
-    },
   },
   created() {
-    if (this.id) {
-      this.formData = { ...this.informeFotografico };
-      delete this.formData.id;
-    }
   },
   methods: {
     onSubmit() {
@@ -97,16 +72,34 @@ export default {
         }
       });
     },
+    step2() {
+      this.$refs.fst1.validate(valid => {
+        if (valid) {
+          this.step = 1;
+        }
+      });
+    },
     onCancel() {
       this.$emit('cancel', this.formData);
+    },
+    cambioCaso(idCaso) {
+      if (idCaso) {
+        CasoResource.get(idCaso, { include: ['fiscal'] }).then(resp => {
+          this.caso = resp.data;
+        }).catch(err => console.log(err));
+      } else {
+        this.caso = undefined;
+      }
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.img-container{
-  width: 100%;
-  padding: 5px;
+.form-container{
+  padding: 20px;
+}
+.step-container {
+  margin: 20px;
 }
 </style>

@@ -11,22 +11,22 @@ const TipoDispositivosRouter = {
       path: 'index',
       component: () => import('@/views/tipoDispositivo'),
       name: 'AdminTipoDispositivos',
-      meta: { title: 'Tipos de Dispositivo', icon: 'device', permissions: ['ViewInFoto'], affix: true, noCache: true },
+      meta: { title: 'Tipos de Dispositivo', icon: 'device', permissions: ['ViewInFoto'], affix: false, noCache: true },
     },
     {
       path: 'new',
       component: () => import('@/views/tipoDispositivo/NewTipoDispositivo'),
       name: 'NewTipoDispositivo',
       hidden: true,
-      meta: { title: 'Nuevo Tipo de Dispositivo', permissions: ['CreateInFoto'], affix: false, noCache: true },
+      meta: { title: 'Nuevo Tipo de Dispositivo', permissions: ['CreateInFoto'], affix: false, noCache: false },
     },
-    // {
-    //   path: 'edit/:id',
-    //   component: () => import('@/views/user/EditUser'),
-    //   name: 'EditUser',
-    //   hidden: true,
-    //   meta: { title: 'Editar Usuario', permissions: ['UpdateUser'], affix: false, noCache: true },
-    // },
+    {
+      path: 'edit/:id',
+      component: () => import('@/views/tipoDispositivo/EditTipoDispositivo'),
+      name: 'EditTipoDispositivo',
+      hidden: true,
+      meta: { title: 'Editar Tipo de Dispositivo', permissions: ['UpdateInFoto'], affix: false, noCache: false },
+    },
   ],
 };
 

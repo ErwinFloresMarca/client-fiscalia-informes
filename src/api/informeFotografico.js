@@ -12,7 +12,7 @@ export default class InformeFotografico extends Resource {
     });
   }
   Grupo(id) {
-    return new Resource(`informe-fotografico/${id}/grupos`);
+    return new Resource(`/informe-fotografico/${id}/grupos`);
   }
 }
 

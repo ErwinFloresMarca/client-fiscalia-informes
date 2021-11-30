@@ -15,6 +15,7 @@ import { adminRoutes } from './modules/admin';
 import UsersRouter from './modules/user';
 import InformesFotograficosRouter from './modules/informeFotografico';
 import TipoDispositivosRouter from './modules/tipoDispositivo';
+import FiscalRouter from './modules/fiscal';
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -91,6 +92,7 @@ export const asyncRoutes = [
   UsersRouter,
   InformesFotograficosRouter,
   TipoDispositivosRouter,
+  FiscalRouter,
   { path: '*', redirect: '/404', hidden: true },
 ];
 
