@@ -20,13 +20,13 @@ const InformesFotograficosRouter = {
       hidden: true,
       meta: { title: 'Nuevo Informe Fotografico', permissions: ['CreateInFoto'], affix: false, noCache: true },
     },
-    // {
-    //   path: 'edit/:id',
-    //   component: () => import('@/views/user/EditUser'),
-    //   name: 'EditUser',
-    //   hidden: true,
-    //   meta: { title: 'Editar Usuario', permissions: ['UpdateUser'], affix: false, noCache: true },
-    // },
+    {
+      path: 'view/:id',
+      component: () => import('@/views/informeFotografico/ViewInformeFotografico'),
+      name: 'ViewInformeFotografico',
+      hidden: true,
+      meta: { title: 'Vista Informe Fotografico', permissions: ['ViewInFoto', 'UpdateInFoto'], affix: false, noCache: true },
+    },
   ],
 };
 

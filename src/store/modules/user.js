@@ -7,6 +7,7 @@ const state = {
   name: '',
   avatar: '',
   ci: '',
+  id: '',
   permissions: [],
 };
 
@@ -16,6 +17,9 @@ const mutations = {
   },
   SET_CI: (state, ci) => {
     state.ci = ci;
+  },
+  SET_ID: (state, id) => {
+    state.id = id;
   },
   SET_NAME: (state, name) => {
     state.name = name;
@@ -54,7 +58,7 @@ const actions = {
           reject('Verification failed, please Login again.');
         }
 
-        const { permissions, name, avatar, ci } = data;
+        const { permissions, name, avatar, ci, id } = data;
 
         // permissions must be a non-empty array
         if (!permissions || permissions.length <= 0) {
@@ -65,6 +69,7 @@ const actions = {
         commit('SET_NAME', name);
         commit('SET_AVATAR', avatar);
         commit('SET_CI', ci);
+        commit('SET_ID', id);
         resolve(data);
       }).catch(error => {
         reject(error);

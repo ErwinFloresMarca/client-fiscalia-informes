@@ -25,12 +25,28 @@
     </transition>
     <transition name="el-zoom-in-bottom">
       <div v-show="step == 1" class="step-container">
-        2
+        <form-dispositivo v-model="form" @success="step3" @cancel="onCancel" />
       </div>
     </transition>
     <transition name="el-zoom-in-top">
       <div v-show="step == 2" class="step-container">
-        3
+        <el-form ref="fst3" :model="form" :rules="rulesfst3" label-width="50%" label-position="right" size="normal">
+          <el-form-item label="Encabezado" prop="encabezado">
+            <el-input v-model="form.encabezado" placeholder="Encabezado" size="normal" clearable />
+          </el-form-item>
+          <el-form-item label="Pie de Pagina" prop="pieDePagina">
+            <el-input v-model="form.pieDePagina" placeholder="Pie de Pagina" size="normal" clearable />
+          </el-form-item>
+          <el-form-item label="Url ubicacion de las Fotos" prop="urlFotosFTP">
+            <el-input v-model="form.urlFotosFTP" placeholder="Url ubicacion de las Fotos" size="normal" clearable />
+          </el-form-item>
+          <el-form-item label-width="0">
+            <el-row :gutter="20" type="flex" justify="space-around">
+              <el-button type="danger" @click="onCancel">CANCELAR</el-button>
+              <el-button type="primary" @click="onSubmit()">SIGUIENTE</el-button>
+            </el-row>
+          </el-form-item>
+        </el-form>
       </div>
     </transition>
   </div>
@@ -40,9 +56,14 @@
 import SelectCaso from '@/views/caso/components/SelectCaso.vue';
 import { CasoResource } from '@/api/caso';
 import ShowCaso from '@/views/caso/components/ShowCaso.vue';
+import FormDispositivo from '@/views/dispositivo/components/FormDispositivo.vue';
 export default {
   name: 'FormInformeFotografico',
-  components: { SelectCaso, ShowCaso },
+  components: {
+    SelectCaso,
+    ShowCaso,
+    FormDispositivo,
+  },
   data() {
     return {
       form: {
@@ -50,9 +71,10 @@ export default {
       rulesfst1: {
         casoId: [{ required: true, message: 'Debe escojer un CUD', trigger: 'blur' }],
       },
-      rulesfst2: {
-      },
       rulesfst3: {
+        encabezado: [{ required: true, message: 'Debe introducir un encabezado', trigger: 'blur' }],
+        pieDePagina: [{ required: true, message: 'Debe introducir un pie de pagina', trigger: 'blur' }],
+        urlFotosFTP: [{ required: true, message: 'Debe introducir la direccion donde se encuentran las fotos', trigger: 'blur' }],
       },
       caso: undefined,
       step: 0,
@@ -66,9 +88,9 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.$refs.formData.validate(valid => {
+      this.$refs.fst3.validate(valid => {
         if (valid) {
-          this.$emit('submit', this.formData);
+          this.$emit('submit', this.form);
         }
       });
     },
@@ -78,6 +100,9 @@ export default {
           this.step = 1;
         }
       });
+    },
+    step3() {
+      this.step = 2;
     },
     onCancel() {
       this.$emit('cancel', this.formData);
