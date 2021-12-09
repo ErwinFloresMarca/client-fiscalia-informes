@@ -1,14 +1,18 @@
-import request from '@/utils/ewquest';
+import request from '@/utils/request';
 
-export const getListFoto = (fileDir) => {
+export const getListFoto = (folderDir) => {
   return request({
     url: `/files-reader`,
     method: 'GET',
-    params: { fileDir: fileDir },
+    params: { folderDir: folderDir },
   });
 };
 
-export const downloadFotoUrl = (fileName, fileDir) => {
-  return process.env.VUE_APP_BASE_API + '/files-reader/' + fileName + `?fileDir=${encodeURIComponent(fileDir)}`;
+export const downloadFotoUrl = (fileName, folderDir = false) => {
+  return process.env.VUE_APP_BASE_API + '/files-reader/' + fileName + (folderDir ? `?folderDir=${encodeURIComponent(folderDir)}` : '');
+};
+
+export const generateOnlyFotoUrl = (fileName, folderDir) => {
+  return fileName + `?folderDir=${encodeURIComponent(folderDir)}`;
 };
 

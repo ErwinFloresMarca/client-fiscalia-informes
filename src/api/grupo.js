@@ -12,7 +12,7 @@ export default class Grupo extends Resource {
     });
   }
   Foto(id) {
-    return new Resource(`/grupos/${id}/fotos`);
+    return new Resource(`grupos/${id}/fotos`);
   }
 }
 

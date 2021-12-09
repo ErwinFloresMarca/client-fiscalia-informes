@@ -2,13 +2,16 @@
   <div class="main-image-container">
     <div class="image-container" @mouseenter="inside()" @mouseleave="outside()">
       <el-image
+        ref="img"
         class="image"
         :src="getUrl"
+        :preview-src-list="[getUrl]"
         fit="cover"
       />
       <div v-if="onHover" class="btn-container">
-        <div class="btn-delete">
-          <el-button type="danger" icon="el-icon-delete" size="default" circle @click="onPressDelete()" />
+        <div>
+          <el-button v-if="preview" type="warning" icon="el-icon-view" size="small" circle @click="onView()" />
+          <el-button :type="typeBtn" :icon="iconBtn" size="small" circle @click="onPress()" />
         </div>
       </div>
     </div>
@@ -17,11 +20,27 @@
 
 <script>
 export default {
-  nmae: 'ShowDeleteImage',
+  nmae: 'ShowSelectableImage',
   props: {
     url: {
       type: String,
       default: null,
+    },
+    typeBtn: {
+      type: String,
+      default: 'primary',
+    },
+    iconBtn: {
+      type: String,
+      default: 'el-icon-check',
+    },
+    useDefaultView: {
+      type: Boolean,
+      default: true,
+    },
+    preview: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
@@ -35,8 +54,15 @@ export default {
     },
   },
   methods: {
-    onPressDelete() {
-      this.$emit('delete', this.getUrl);
+    onPress() {
+      this.$emit('on-press', this.getUrl);
+    },
+    onView() {
+      if (this.useDefaultView) {
+        this.$refs.img.clickHandler(this.getUrl);
+      } else {
+        this.$emit('on-view', this.getUrl);
+      }
     },
     inside() {
       if (this.onHover === false) { this.onHover = true; }
@@ -74,23 +100,14 @@ export default {
   width: 100%;
   height: 100%;
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
   border-radius: 10px;
   background-color: rgb(20,20,20,0.5);
-}
-.btn-delete{
-  border-radius: 10px;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  bottom: 0;
-  right: 0;
-  margin-top: -19px;
-  margin-left: -19px;
 }
 </style>

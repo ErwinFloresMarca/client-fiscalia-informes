@@ -5,7 +5,7 @@ export default class Fiscal extends Resource {
     super('fiscales');
   }
   Caso(id) {
-    return new Resource(`/fiscales/${id}/casos`);
+    return new Resource(`fiscales/${id}/casos`);
   }
 }
 

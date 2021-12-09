@@ -4,5 +4,5 @@ export const uploadFileUrl = () => {
 };
 
 export const downloadFileUrl = (fileName) => {
-  return process.env.VUE_APP_BASE_API + 'files/' + fileName;
+  return process.env.VUE_APP_BASE_API + '/files/' + fileName;
 };

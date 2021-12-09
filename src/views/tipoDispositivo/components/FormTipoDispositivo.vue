@@ -7,7 +7,7 @@
       <el-form-item label="Atributos" prop="atributos" label-position="top">
         <el-row :gutter="20">
           <el-col :span="24">
-            <el-row v-for="att in Object.keys(formData.atributos)" :key="att" :gutter="20" type="flex" justify="space-between">
+            <el-row v-for="att in getFDAttKeys" :key="att" :gutter="20" type="flex" justify="space-between">
               <template v-if="formData.atributos[att]">
                 <el-col :span="6" :offset="0">
                   {{ att }}
@@ -105,6 +105,11 @@ export default {
     id() {
       return this.idTipoDispositivo;
     },
+    getFDAttKeys() {
+      return Object.keys(this.formData.atributos).sort((a, b) => {
+        return this.formData.atributos[a].position - this.formData.atributos[b].position;
+      });
+    },
   },
   watch: {
     tipoDispositivo(newVal) {
@@ -137,9 +142,19 @@ export default {
         });
         return;
       }
-      this.formData.atributos[this.newTipo.key] = {
+      const newPosition = Object.keys(this.formData.atributos).reduce((val, att) => {
+        if ((this.formData.atributos[att].position | 0) >= val) { return this.formData.atributos[att].position + 1; }
+        return val;
+      }, 1);
+      const obj = {};
+      obj[this.newTipo.key] = {
+        position: newPosition,
         type: this.newTipo.type,
         required: this.newTipo.required,
+      };
+      this.formData.atributos = {
+        ...this.formData.atributos,
+        ...obj,
       };
       const att = this.formData.atributos;
       this.formData.atributos = {};
@@ -152,7 +167,7 @@ export default {
     onDeleteAtributo(att) {
       const attAux = this.formData.atributos;
       this.formData.atributos = {};
-      attAux[att] = undefined;
+      delete attAux[att];
       this.formData.atributos = attAux;
     },
   },

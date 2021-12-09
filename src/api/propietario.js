@@ -5,7 +5,7 @@ export default class Propietario extends Resource {
     super('propietarios');
   }
   Dispositivo(id) {
-    return new Resource(`/propietarios/${id}/dispositivos`);
+    return new Resource(`propietarios/${id}/dispositivos`);
   }
 }
 

@@ -42,10 +42,11 @@ class Resource {
       data: resource,
     });
   }
-  destroy(id) {
+  destroy(id, where) {
     return request({
       url: '/' + this.uri + '/' + id,
       method: 'delete',
+      params: { where: where },
     });
   }
 }

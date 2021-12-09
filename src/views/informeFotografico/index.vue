@@ -23,9 +23,18 @@
           :width="prop.width"
         >
           <template slot-scope="scope">
-            <el-button v-if="prop.key === 'state'" :type="scope.row.state? 'success': 'danger'" size="mini" @click="onChangeState(scope.row.id, scope.row.state)">
-              {{ scope.row.state? 'Activo': 'Inactivo' }}
-            </el-button>
+            <span v-if="prop.key === 'cud'">
+              {{ scope.row.caso.cud }}
+            </span>
+            <span v-if="prop.key === 'delito'">
+              {{ scope.row.caso.delito }}
+            </span>
+            <span v-if="prop.key === 'fiscal'">
+              {{ `${scope.row.caso.fiscal.nombres} ${scope.row.caso.fiscal.apPaterno} ${scope.row.caso.fiscal.apMaterno}` }}
+            </span>
+            <span v-if="prop.key === 'tipoDispositivo'">
+              {{ scope.row.dispositivo.tipoDispositivo.tipo }}
+            </span>
             <span v-else-if="prop.key === 'created'">
               {{ formatTime(scope.row.created, '{d}/{m}/{y}') }}
             </span>
@@ -39,7 +48,7 @@
           width="200px"
         >
           <el-row slot-scope="scope" type="flex" justify="space-around">
-            <el-button v-permission="['UpdateUser']" type="primary" icon="el-icon-edit" size="mini" @click="onEdit(scope.row.id)">Editar</el-button>
+            <el-button v-permission="['UpdateUser']" type="primary" icon="el-icon-view" size="mini" @click="onView(scope.row.id)">Ver</el-button>
             <el-button v-permission="['DeleteUser']" type="danger" icon="el-icon-delete" size="mini" @click="onDelete(scope.row.id)">Eliminar</el-button>
           </el-row>
         </el-table-column>
@@ -69,11 +78,10 @@ export default {
     return {
       properties: [
         { key: 'cud', label: 'CUD', filterable: true },
-        { key: 'victima', label: 'Victima', filterable: true },
-        { key: 'denunciado', label: 'Denunciado', filterable: true },
-        { key: 'propietarioDispositivo', label: 'Propietario Disp.', filterable: false },
-        { key: 'marcaDispositivo', label: 'Marca Disp.', filterable: true },
-        { key: 'nombreDispositivo', label: 'Nombre Disp.', filterable: true },
+        { key: 'delito', label: 'Delito', filterable: true },
+        { key: 'fiscal', label: 'Fiscal', filterable: false },
+        { key: 'tipoDispositivo', label: 'Tipo de Dispositivo', filterable: true },
+        { key: 'created', label: 'Fecha de Registro', filterable: false },
       ],
       filter: {},
       list: [],
@@ -116,6 +124,10 @@ export default {
         ... this.filter,
         limit: this.pagination.limit,
         skip: this.pagination.skip * this.pagination.limit,
+        include: [
+          { relation: 'caso', scope: { include: [{ relation: 'fiscal' }] }},
+          { relation: 'dispositivo', scope: { include: [{ relation: 'tipoDispositivo' }] }},
+        ],
       }).then(resp => {
         resp.data.forEach(e => {
           e.fechaRegistro = formatTime(e.fechaRegistro);
@@ -139,8 +151,8 @@ export default {
     onAdd() {
       this.$router.push({ name: 'NewInformeFotografico' });
     },
-    onEdit(idInformeFotografico) {
-      this.$router.push({ name: 'EditInformeFotografico', params: {
+    onView(idInformeFotografico) {
+      this.$router.push({ name: 'ViewInformeFotografico', params: {
         id: idInformeFotografico,
       }});
     },

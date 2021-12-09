@@ -5,7 +5,7 @@ export default class TipoDispositivo extends Resource {
     super('tipo-dispositivos');
   }
   Dispositivos(id) {
-    return new Resource(`/informe-fotografico/${id}/dispositivos`);
+    return new Resource(`informe-fotografico/${id}/dispositivos`);
   }
 }
 
