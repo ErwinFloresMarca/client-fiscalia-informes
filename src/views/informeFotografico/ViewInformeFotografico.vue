@@ -2,7 +2,14 @@
   <div class="page-container">
     <el-row v-if="IF" :gutter="20">
       <el-col :span="10" :xs="24">
-        /contenido columna
+        <el-collapse :accordion="false">
+          <el-collapse-item
+            :title="`${IF.caso.cud} - ${IF.caso.delito}`"
+            name="editIF"
+          >
+            <edit-form-informe-fotografico v-model="IF" @change="onChange()" />
+          </el-collapse-item>
+        </el-collapse>
         <el-row :gutter="20">
           <el-col :span="24" :offset="0">
             <el-card shadow="hover">
@@ -67,6 +74,7 @@ import { filterNoUsedFiles, orderGroupsAndFotos } from '@/utils/informeFotografi
 import draggable from 'vuedraggable';
 import { GrupoResource } from '@/api/grupo';
 import ManageGroups from './grupo/ManageGroups.vue';
+import EditFormInformeFotografico from './components/EditFormInformeFotografico.vue';
 export default {
   name: 'ViewInformeFotografico',
   components: {
@@ -74,6 +82,7 @@ export default {
     InformeFotograficoReport,
     draggable,
     ManageGroups,
+    EditFormInformeFotografico,
   },
   data() {
     return {
@@ -183,6 +192,9 @@ export default {
           type: 'warning',
         });
       }
+    },
+    onChange() {
+      this.getIF();
     },
   },
 };

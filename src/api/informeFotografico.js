@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import Resource from './resource';
+import ResourceRelation from './resourceRelation';
 
 export default class InformeFotografico extends Resource {
   constructor() {
@@ -12,7 +13,7 @@ export default class InformeFotografico extends Resource {
     });
   }
   Grupo(id) {
-    return new Resource(`informe-fotografico/${id}/grupos`);
+    return new ResourceRelation(`informe-fotografico/${id}/grupos`);
   }
 }
 

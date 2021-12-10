@@ -8,6 +8,7 @@
       remote
       reserve-keyword
       :remote-method="onFilter"
+      style="width: 100%;"
       @change="onChange()"
     >
       <el-option
@@ -50,11 +51,17 @@ export default {
     value(newValue, oldValue) {
       if (newValue !== oldValue) {
         this.selectCaso = newValue;
+        this.onFilter(this.value);
       }
     },
   },
   created() {
-    this.onFilter('');
+    if (this.value) {
+      this.onFilter(this.value);
+      this.selectCaso = this.value;
+    } else {
+      this.onFilter('');
+    }
   },
   methods: {
     onChange() {
@@ -65,7 +72,8 @@ export default {
       CasoResource.list({
         where: {
           or: [{ cud: { like: kw }},
-            { delito: { like: kw }}],
+            { delito: { like: kw }},
+            { id: kw }],
         },
         order: ['cud asc', 'delito asc'],
         limit: 15,
@@ -80,6 +88,7 @@ export default {
       this.casos.push(caso);
       this.selectCaso = caso.id;
       this.showDialogNew = false;
+      this.onChange();
       this.$message({
         message: 'El Caso Fue creado exitosamente.',
         type: 'success',

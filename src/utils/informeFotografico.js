@@ -16,7 +16,10 @@ export const filterNoUsedFiles = (fotos, IF) => {
 export const orderFotos = (group) => {
   if (group) {
     group.fotos = group.ordenFotos.map(fid => {
-      return group.fotos.find(f => fid === f.id);
+      const fto = group.fotos.find(f => fid === f.id);
+      fto.defaultWidth = group.fotoWidth || group.defaultWidth;
+      fto.defaultHeight = group.fotoHeight || group.defaultHeight;
+      return fto;
     });
   }
   return group;
@@ -25,7 +28,10 @@ export const orderFotos = (group) => {
 export const orderGroupsAndFotos = (IF) => {
   if (IF.grupos) {
     IF.grupos = IF.ordenGrupos.map(gid => {
-      return orderFotos(IF.grupos.find(g => gid === g.id));
+      const gr = IF.grupos.find(g => gid === g.id);
+      gr.defaultWidth = IF.fotoWidth;
+      gr.defaultHeight = IF.fotoHeight;
+      return orderFotos(gr);
     });
   }
   return IF;

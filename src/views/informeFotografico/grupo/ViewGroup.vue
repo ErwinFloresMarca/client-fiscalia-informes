@@ -5,16 +5,50 @@
       trigger="hover"
       content="Titulo del grupo"
     >
-      <el-input slot="reference" v-model="localData.tituloGrupo" :disabled="!editTitle" placeholder="Titulo" style="width: 90%" clearable>
-        <template slot="prepend">
-          <el-button
-            :type="editTitle? 'success': 'warning'"
-            :icon="'el-icon-'+ (editTitle? 'check': 'edit')"
-            @click="onEditTitle()"
-          />
-        </template>
-      </el-input>
+      <table slot="reference" width="100%">
+        <tr>
+          <td width="50px">
+            <el-button
+              :type="edit? 'success': 'warning'"
+              :icon="'el-icon-'+ (edit? 'check': 'edit')"
+              @click="onEdit()"
+            />
+          </td>
+          <td>
+            <el-input v-model="localData.tituloGrupo" :disabled="!edit" placeholder="Titulo" style="width: 100%" clearable />
+          </td>
+          <td width="50px">
+            <el-button type="danger" icon="el-icon-delete" @click="onDelete()" />
+          </td>
+        </tr>
+      </table>
     </el-popover>
+    <el-row v-show="edit" :gutter="20">
+      <el-col :span="12" :offset="0">
+        <el-form label-width="80px">
+          <el-form-item label="Ancho">
+            <el-input
+              v-model="localData.fotoWidth"
+              type="text"
+              :placeholder="'Def. ' + localData.defaultWidth"
+              clearable
+            />
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col :span="12" :offset="0">
+        <el-form label-width="80px">
+          <el-form-item label="Alto">
+            <el-input
+              v-model="localData.fotoHeigth"
+              type="text"
+              :placeholder="'Def. ' + localData.defaultHeight"
+              clearable
+            />
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
     <div class="files-container">
       <draggable v-model="localData.fotos" class="draggable" group="fotos" @change="onChangeOrderFotos()">
         <foto-item v-for="(fto, i) in localData.fotos" :key="fto.urlFoto" v-model="localData.fotos[i]" type-btn="danger" icon-btn="el-icon-delete" @on-press="onDeleteFoto(fto)" />
@@ -25,6 +59,7 @@
 
 <script>
 import { GrupoResource } from '@/api/grupo';
+import { FotoResource } from '@/api/foto';
 import FotoItem from './foto/FotoItem.vue';
 import draggable from 'vuedraggable';
 export default {
@@ -42,7 +77,7 @@ export default {
   data() {
     return {
       localData: null,
-      editTitle: false,
+      edit: false,
     };
   },
   watch: {
@@ -58,6 +93,21 @@ export default {
       this.$emit('change', this.localData);
       this.$emit('input', this.localData);
     },
+    onDelete() {
+      GrupoResource.Foto(this.localData.id).destroy().then(() => {
+        this.$message({
+          message: 'Registro de fotos eliminados con Exito.',
+          type: 'success',
+        });
+        GrupoResource.destroy(this.localData.id).then(() => {
+          this.$message({
+            message: 'Grupo Eliminado con Exito.',
+            type: 'success',
+          });
+          this.$emit('delete', this.localData);
+        });
+      });
+    },
     onChangeOrderFotos() {
       GrupoResource.update(this.localData.id, {
         ordenFotos: this.localData.fotos.map(f => f.id),
@@ -66,11 +116,23 @@ export default {
           message: 'Orden de Fotos actualizado.',
           type: 'success',
         });
+        this.localData.fotos.forEach(f => {
+          if (f.grupoId !== this.localData.id) {
+            FotoResource.update(f.id, {
+              grupoId: this.localData.id,
+            }).then(() => {
+              this.$message({
+                message: 'Foto cambiado de grupo con Exito.',
+                type: 'success',
+              });
+              this.onChange();
+            });
+          }
+        });
       });
-      this.onChange();
     },
     onDeleteFoto(fto) {
-      GrupoResource.Foto(fto.grupoId).destroy(fto.id)
+      FotoResource.destroy(fto.id)
         .then(() => {
           this.$message({
             message: 'Foto Eliminado Exitosamente',
@@ -83,16 +145,18 @@ export default {
               message: 'Orden de Fotos actualizado.',
               type: 'success',
             });
+            this.onChange();
           });
         });
-      this.onChange();
     },
-    onEditTitle() {
-      this.editTitle = !this.editTitle;
-      if (!this.editTitle) {
+    onEdit() {
+      this.edit = !this.edit;
+      if (!this.edit) {
         this.onChange();
         GrupoResource.update(this.localData.id, {
           tituloGrupo: this.localData.tituloGrupo,
+          fotoWidth: this.localData.fotoWidth,
+          fotoHeigth: this.localData.fotoHeigth,
         }).then(() => {
           this.$message({
             message: 'El titulo del grupo fue actualizado exitosamente.',

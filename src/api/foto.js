@@ -1,8 +1,8 @@
 import request from '@/utils/request';
-
-export default class Foto {
+import Resource from './resource';
+export default class Foto extends Resource {
   constructor() {
-    this.uri = 'fotos';
+    super('fotos');
   }
   getGrupo(id) {
     return request({

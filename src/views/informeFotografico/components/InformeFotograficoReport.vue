@@ -22,7 +22,9 @@
       :manual-pagination="false"
       :pdf-format="size"
       pdf-orientation="portrait"
-      :html-to-pdf-options="{margin: 10}"
+      :html-to-pdf-options="{margin: 18, html2canvas: {
+        useCORS: true,
+      }}"
       @hasGenerated="hasGenerated($event)"
     >
       <section slot="pdf-content">
@@ -52,6 +54,19 @@
             </tr>
           </template>
         </table>
+        <div v-for="grupo in getIF.grupos" :key="grupo.id" class="group-container">
+          <el-row :gutter="20" type="flex" justify="center">
+            <h3>{{ grupo.tituloGrupo }}</h3>
+          </el-row>
+          <div class="images-container">
+            <div v-for="foto in grupo.fotos" :key="foto.id" class="image-container" :style="{width: (foto.fotoWidth || foto.defaultWidth)}">
+              <div class="image" :style="{ width: '100%', height: (foto.fotoHeight || foto.defaultHeight)}">
+                <img class="img" :src="downloadFotoUrl(foto.urlFoto)" alt="no se pudo cargar la imagen">
+              </div>
+              <p>{{ foto.descripcion }}</p>
+            </div>
+          </div>
+        </div>
       </section>
     </vue-html2pdf>
   </div>
@@ -60,6 +75,7 @@
 <script>
 
 import VueHtml2pdf from 'vue-html2pdf';
+import { downloadFotoUrl } from '@/api/fileReader';
 export default {
   name: 'InformeFotograficoReport',
   components: {
@@ -88,6 +104,7 @@ export default {
     onDownload() {
       this.$refs.html2Pdf.generatePdf();
     },
+    downloadFotoUrl,
   },
 };
 </script>
@@ -96,4 +113,27 @@ export default {
 .report-option-item{
   margin: 5px;
 }
+.group-container{
+  .images-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .image-container{
+      width: fit-content;
+      height: fit-content;
+      .image{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        .img {
+          width: auto;
+          height: auto;
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+    }
+  }
+}
+
 </style>

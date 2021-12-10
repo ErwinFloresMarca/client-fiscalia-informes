@@ -41,10 +41,10 @@
               />
             </el-form-item>
             <el-form-item label="Ancho">
-              <el-input v-model="localData.fotoWidth" type="text" />
+              <el-input v-model="localData.fotoWidth" type="text" :placeholder="'Def. '+localData.defaultWidth" clearable />
             </el-form-item>
             <el-form-item label="Alto">
-              <el-input v-model="localData.fotoHeight" type="text" />
+              <el-input v-model="localData.fotoHeight" type="text" :placeholder="'Def. '+localData.defaultHeight" clearable />
             </el-form-item>
             <el-form-item size="normal" label-width="0">
               <el-row type="flex" justify="space-around">
@@ -62,7 +62,7 @@
 <script>
 import ShowSelectableImage from '@/components/ShowSelectableImage.vue';
 import { downloadFotoUrl } from '@/api/fileReader';
-import { GrupoResource } from '@/api/grupo';
+import { FotoResource } from '@/api/foto';
 export default {
   name: 'FotoItem',
   components: { ShowSelectableImage },
@@ -112,9 +112,8 @@ export default {
     },
     onSaveChanges() {
       // save changes
-      this.$emit('input', this.localData);
-      if (this.localData.id && this.localData.idGrupo) {
-        GrupoResource.Foto(this.localData.idGrupo).update(this.localData.id, {
+      if (this.localData.id && this.localData.grupoId) {
+        FotoResource.update(this.localData.id, {
           descripcion: this.localData.descripcion,
           fotoWidth: this.localData.fotoWidth,
           fotoHeight: this.localData.fotoHeight,
@@ -123,6 +122,7 @@ export default {
             message: 'Foto actualizado exitosamente',
             type: 'success',
           });
+          this.$emit('input', this.localData);
         });
       }
       this.visible = false;

@@ -1,5 +1,6 @@
 import request from '@/utils/request';
 import Resource from './resource';
+import ResourceRelation from './resourceRelation';
 
 export default class Grupo extends Resource {
   constructor() {
@@ -12,7 +13,7 @@ export default class Grupo extends Resource {
     });
   }
   Foto(id) {
-    return new Resource(`grupos/${id}/fotos`);
+    return new ResourceRelation(`grupos/${id}/fotos`);
   }
 }
 
