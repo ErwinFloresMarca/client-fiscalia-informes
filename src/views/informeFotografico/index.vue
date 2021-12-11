@@ -77,8 +77,8 @@ export default {
   data() {
     return {
       properties: [
-        { key: 'cud', label: 'CUD', filterable: true },
-        { key: 'delito', label: 'Delito', filterable: true },
+        { key: 'cud', label: 'CUD', filterable: false },
+        { key: 'delito', label: 'Delito', filterable: false },
         { key: 'fiscal', label: 'Fiscal', filterable: false },
         { key: 'tipoDispositivo', label: 'Tipo de Dispositivo', filterable: true },
         { key: 'created', label: 'Fecha de Registro', filterable: false },

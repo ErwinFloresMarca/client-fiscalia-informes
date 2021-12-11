@@ -18,6 +18,7 @@
       pdf-content-width="100%"
       filename="new File"
       :pdf-quality="2"
+      :pdf-margin="18"
       :paginate-elements-by-height="1000"
       :manual-pagination="false"
       :pdf-format="size"
@@ -25,7 +26,8 @@
       :html-to-pdf-options="{margin: 18, html2canvas: {
         useCORS: true,
       }}"
-      @hasGenerated="hasGenerated($event)"
+      :before-preview="beforePreview"
+      @beforeDownload="beforeDownload"
     >
       <section slot="pdf-content">
         <el-row type="flex" justify="center">
@@ -74,7 +76,7 @@
 
 <script>
 
-import VueHtml2pdf from 'vue-html2pdf';
+import VueHtml2pdf from '@/components/VueHtml2pdf';
 import { downloadFotoUrl } from '@/api/fileReader';
 export default {
   name: 'InformeFotograficoReport',
@@ -98,8 +100,26 @@ export default {
     },
   },
   methods: {
-    hasGenerated(file) {
-      console.log(file);
+    beforePreview(html2pdfSetup) {
+      return html2pdfSetup.toPdf().get('pdf').then((pdf) => {
+        console.log('before Preview:', pdf);
+        const totalPages = pdf.internal.getNumberOfPages();
+        for (let i = 1; i <= totalPages; i++) {
+          pdf.setPage(i);
+          pdf.setFontSize(10);
+          pdf.setTextColor(150);
+          pdf.text('Página ' + i + ' de ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.82), (pdf.internal.pageSize.getHeight() - 8));
+
+          pdf.setTextColor('#000000');
+          // header
+          pdf.text(this.getIF.encabezado, 18, 10);
+          // footer
+          pdf.text(this.getIF.pieDePagina, 18, (pdf.internal.pageSize.getHeight() - 8));
+        }
+      });
+    },
+    beforeDownload({ options }) {
+      console.log(options);
     },
     onDownload() {
       this.$refs.html2Pdf.generatePdf();
