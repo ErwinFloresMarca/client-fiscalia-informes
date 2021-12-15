@@ -76,10 +76,11 @@ export default {
     onNew() {
       this.showDialogNew = true;
     },
-    onSuccesNewPersona(caso) {
-      this.propietarios.push(caso);
-      this.selectPropietario = caso.id;
+    onSuccesNewPersona(propietario) {
+      this.propietarios.push(propietario);
+      this.selectPropietario = propietario.id;
       this.showDialogNew = false;
+      this.onChange();
       this.$message({
         message: 'La Persona Fue creada exitosamente.',
         type: 'success',

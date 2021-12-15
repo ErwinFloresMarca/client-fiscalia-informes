@@ -139,6 +139,7 @@ export default {
     flex-wrap: wrap;
     justify-content: space-around;
     .image-container{
+      margin: 10px;
       width: fit-content;
       height: fit-content;
       .image{
