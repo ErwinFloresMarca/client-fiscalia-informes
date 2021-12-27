@@ -40,7 +40,7 @@
         <el-form label-width="80px">
           <el-form-item label="Alto">
             <el-input
-              v-model="localData.fotoHeigth"
+              v-model="localData.fotoHeight"
               type="text"
               :placeholder="'Def. ' + localData.defaultHeight"
               clearable
@@ -156,7 +156,7 @@ export default {
         GrupoResource.update(this.localData.id, {
           tituloGrupo: this.localData.tituloGrupo,
           fotoWidth: this.localData.fotoWidth,
-          fotoHeigth: this.localData.fotoHeigth,
+          fotoHeight: this.localData.fotoHeight,
         }).then(() => {
           this.$message({
             message: 'El titulo del grupo fue actualizado exitosamente.',
